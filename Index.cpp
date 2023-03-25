@@ -67,9 +67,9 @@ void insertLast(linkedlist *l, produk listProduk[], int x){
     node *new_node, *current;
     new_node = new node;
     new_node->Transaksi.noTransaksi = tempNoTrans;
-    new_node->Transaksi.namaProduk = listProduk[x].nama;
+    new_node->Transaksi.namaProduk = listProduk[x-1].nama;
     new_node->Transaksi.Qty = tempQty;
-    new_node->Transaksi.totalHarga = tempQty * listProduk[x].harga;
+    new_node->Transaksi.totalHarga = tempQty * listProduk[x-1].harga;
     new_node->next = NULL;
 
     if (isEmpty(keranjang))
@@ -102,16 +102,17 @@ void deleteLast(linkedlist *l){
 
 // MENAMPILKAN HISTORY TRANSAKSI
 void displayHistory(linkedlist l){
+    system("cls");
     if(isEmpty(l))
         cout << "List kosong" << endl;
     else{
         node *current = l.head;
         while (current != NULL){
-            cout << "Nomor Transaksi:" << "\t" << current->Transaksi.noTransaksi << endl
-            << "Produk:" << "\t\t" << current->Transaksi.namaProduk << endl
-            << "Jumlah:" << "\t\t" << current->Transaksi.Qty << "\t" << endl
-            << "Total Harga:" << "\t" << current->Transaksi.totalHarga << endl
-            << "Status Pembayaran:" << "\t" << current->Transaksi.statusPembayaran << endl
+            cout << "Nomor Transaksi\t  : " << current->Transaksi.noTransaksi << endl
+            << "Produk\t\t  : " << current->Transaksi.namaProduk << endl
+            << "Jumlah\t\t  : " << current->Transaksi.Qty << "\t" << endl
+            << "Total Harga\t  : " << current->Transaksi.totalHarga << endl
+            << "Status Pembayaran : " << current->Transaksi.statusPembayaran << endl
             << endl;
             current = current->next;
         }
@@ -233,7 +234,7 @@ int pembelian(linkedlist *l){
                 }
                 else if (choice == 'n' || choice == 'N')
                 {
-                    deleteLast(&keranjang); //Masih Ambigu
+                    //deleteLast(&keranjang); //Masih Error disini outputnya
                     cout << "Kembali ke Menu Utama " << endl;
                     return menuUtama();
                     
@@ -269,10 +270,16 @@ int menuUtama(){
             pembelian(&keranjang);
             system("pause");
             break;
+        case 3:
+            displayHistory(keranjang);
+            system("pause");
+            break;
         case 4:
             return 0;
+            break;
         default:
             cout << "Masukan inputan yang benar" << endl;
+            system("pause");
             break;
         }
     } 
