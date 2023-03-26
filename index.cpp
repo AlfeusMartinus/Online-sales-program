@@ -22,7 +22,7 @@ int length = sizeof(listProduk) / sizeof(listProduk[0]);
 
 struct transaksi
 {
-    int noTransaksi;
+    string noTransaksi;
     string namaProduk;
     int Qty;
     double totalHarga;
@@ -61,7 +61,8 @@ bool isEmpty(linkedlist l)
 
 // MENAMBAHKAN TRANSAKSI
 void insertLast(linkedlist *l, produk listProduk[], int x){
-    int tempQty, tempNoTrans;
+    int tempQty;
+    string tempNoTrans, choice;
     cout << "Berapa banyak produk\t\t: ";
     cin >> tempQty;
     cout << "Masukan nomor transaksi\t\t: ";
@@ -228,14 +229,15 @@ int pembelian(){
         }
         else
         {
-            char choice;
-            node *current;
+            string choice;
+            node *current, *current2;
             insertLast(&keranjang, listProduk, pilihB);
             current = keranjang.head;
             while (current->next != NULL)
             {
                 current = current->next;
             }
+            current2 = current;
             while (current != NULL){
                 cout << endl 
                 << "Nomor Transaksi\t  : " << current->Transaksi.noTransaksi << endl
@@ -244,33 +246,128 @@ int pembelian(){
                 << "Total Harga\t  : " << current->Transaksi.totalHarga << endl
                 << "Status Pembayaran : " << current->Transaksi.statusPembayaran << endl
                 << endl;
-                current = current->next;
+                break;
             }
             cout << endl;
             while (1 == 1)
             {
                 cout << "Apakah pesanan sudah tepat ? (y) Ya  (n) Tidak : ";
                 cin >> choice;
-                if (choice == 'y' || choice == 'Y')
+                if (choice == "y" || choice == "Y")
                 {
-                    cout << "Bayar Sekarang atau Nanti ? (y) Sekarang (n) Nanti : ";
+                    cout << "Apakah sudah dibayar? (Y/N) ";
                     cin >> choice;
-                    if (choice == 'y' || choice == 'Y')
+                    if (choice == "y" || choice == "Y")
                     {
+                        current2->Transaksi.statusPembayaran = "Sudah Selesai";
                         return menuUtama();
                     }
+                    else if (choice == "n" || choice == "N")
+                    {
+                        current2->Transaksi.statusPembayaran = "Belum Selesai";
+                        return menuUtama();
+                    }
+                    else
+                    {
+                       cout << "Masukan inputan yang benar" << endl;
+                        continue; 
+                    }
                 }
-                else if (choice == 'n' || choice == 'N')
+                else if (choice == "n" || choice == "N")
                 {
                     removeLast(&keranjang);
                     cout << "Kembali ke Menu Utama " << endl;
                     return menuUtama();
                     
                 }
+                else
+                {
+                    cout << "Masukan inputan yang benar" << endl;
+                    continue;
+                }
             }
             break;
         }
     } 
+    return 0;
+}
+
+int Pembayaran()
+{
+    while (1 == 1)
+    {
+        system("CLS");
+        int subMenu;
+        cout << "------- MENU PEMBAYARAN -------" << endl << endl;
+        cout << "1. Tampilkan History Pembayaran" << endl;
+        cout << "2. Bayar Transaksi" << endl;
+        cout << "3. Kembali ke Menu Utama" << endl;
+        cout << "Pilihan Anda: ";
+        cin >> subMenu;
+        switch (subMenu) {
+            case 1:
+                displayHistory(keranjang);
+                system("pause");
+                break;
+            case 2:
+                if (isEmpty(keranjang)) 
+                {
+                    cout << "Tidak ada transaksi yang harus dibayar." << endl;
+                }
+                else if (!isEmpty(keranjang))
+                {
+                    string search;
+                    node *current, *current2;
+                    cout << "Masukan No. Transaksi  : ";
+                    cin >> search;
+                    
+                    current = keranjang.head;
+                    while (current != NULL && current->Transaksi.noTransaksi != search)
+                    {
+                            current = current->next;
+                    }
+                    if (current == NULL)
+                    {
+                        cout << "No. Transaksi tidak terdaftar" << endl;
+                        system("pause");
+                        // Pembayaran();
+                        break;
+                    }
+                    current2 = current;
+                    while (current != NULL){
+                        cout << endl 
+                        << "Nomor Transaksi\t  : " << current2->Transaksi.noTransaksi << endl
+                        << "Produk\t\t  : " << current2->Transaksi.namaProduk << endl
+                        << "Jumlah\t\t  : " << current2->Transaksi.Qty << endl
+                        << "Total Harga\t  : " << current2->Transaksi.totalHarga << endl
+                        << "Status Pembayaran : " << current2->Transaksi.statusPembayaran << endl
+                        << endl;
+                        break;
+                    }
+                    cout << endl;
+                    
+                    if (current2->Transaksi.statusPembayaran == "Sudah Selesai")
+                    {
+                        cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " Sudah Selesai, Tidak Perlu Dibayar" << endl;
+                    }
+                    else if (current2->Transaksi.statusPembayaran == "Belum Selesai")
+                    {
+                        current2->Transaksi.statusPembayaran = "Sudah Selesai";    
+                        cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " telah dibayar." << endl;
+                    }
+                }
+                system("pause");
+                break;
+            case 3:
+                menuUtama();
+                break;
+            default:
+                cout << "Masukan inputan yang benar" << endl;
+                system("pause");
+                break;
+        }
+    }
+    return 0;
 }
 
 // MENAMPILKAN MENU UTAMA
@@ -305,39 +402,7 @@ int menuUtama(){
             system("pause");
             break;
         case 4:
-            system("CLS");
-            int subMenu;
-            cout << "MENU PEMBAYARAN" << endl << endl;
-            cout << "1. Tampilkan History Pembayaran" << endl;
-            cout << "2. Bayar Transaksi" << endl;
-            cout << "3. Kembali ke Menu Utama" << endl;
-            cout << "Pilihan Anda: ";
-            cin >> subMenu;
-            switch (subMenu) {
-                case 1:
-                    displayHistory(keranjang);
-                    break;
-                case 2:
-                    if (isEmpty(keranjang)) {
-                        cout << "Tidak ada transaksi yang harus dibayar." << endl;
-                    }
-                    else {
-                        node *current = keranjang.head;
-                        while (current != NULL) {
-                            if (current->Transaksi.statusPembayaran == "N") {
-                                current->Transaksi.statusPembayaran = "Y";
-                                cout << "Transaksi dengan nomor " << current->Transaksi.noTransaksi << " telah dibayar." << endl;
-                            }
-                            current = current->next;
-                        }
-                    }
-                    break;
-                case 3:
-                    break;
-                default:
-                    cout << "Pilihan salah" << endl;
-                    break;
-            }
+            Pembayaran();
             system("pause");
             break;
         case 5: 
