@@ -223,7 +223,6 @@ bool login() {
 void displayDaftar(){
     system("cls");
     cout << "------------------- Daftar Produk -------------------" << endl << endl;
-
     for (int i = 0; i < length; i++)
     {
         produk *pProduk = &listProduk[i]; // pointer untuk mengakses struct produk
