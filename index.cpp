@@ -312,34 +312,30 @@ int Pembayaran()
                     cin >> search;
                     
                     current = keranjang.head;
-                    while (current->Transaksi.noTransaksi != search)
+                    while (current != NULL && current->Transaksi.noTransaksi != search)
                     {
-                        if (current == keranjang.tail)
-                        {
-                            break;
-                        }
-                        else
-                        {
                             current = current->next;
-                        }
+                    }
+                    if (current == NULL)
+                    {
+                        cout << "No. Transaksi tidak terdaftar" << endl;
+                        system("pause");
+                        Pembayaran();
                     }
                     current2 = current;
-                    while (current->next != NULL){
+                    while (current != NULL){
                         cout << endl 
-                        << "Nomor Transaksi\t  : " << current->Transaksi.noTransaksi << endl
-                        << "Produk\t\t  : " << current->Transaksi.namaProduk << endl
-                        << "Jumlah\t\t  : " << current->Transaksi.Qty << endl
-                        << "Total Harga\t  : " << current->Transaksi.totalHarga << endl
-                        << "Status Pembayaran : " << current->Transaksi.statusPembayaran << endl
+                        << "Nomor Transaksi\t  : " << current2->Transaksi.noTransaksi << endl
+                        << "Produk\t\t  : " << current2->Transaksi.namaProduk << endl
+                        << "Jumlah\t\t  : " << current2->Transaksi.Qty << endl
+                        << "Total Harga\t  : " << current2->Transaksi.totalHarga << endl
+                        << "Status Pembayaran : " << current2->Transaksi.statusPembayaran << endl
                         << endl;
                         break;
                     }
                     cout << endl;
-                    if (current2 == keranjang.tail && current2->Transaksi.noTransaksi != search)
-                    {
-                        cout << "No. Transaksi tidak terdaftar" << endl;
-                    }
-                    else if (current2->Transaksi.statusPembayaran == "Sudah Selesai")
+                    
+                    if (current2->Transaksi.statusPembayaran == "Sudah Selesai")
                     {
                         cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " Sudah Selesai, Tidak Perlu Dibayar" << endl;
                     }
