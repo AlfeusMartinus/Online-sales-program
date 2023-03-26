@@ -320,7 +320,7 @@ int Pembayaran()
                     {
                         cout << "No. Transaksi tidak terdaftar" << endl;
                         system("pause");
-                        Pembayaran();
+                        break;
                     }
                     current2 = current;
                     while (current != NULL){
