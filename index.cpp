@@ -253,26 +253,24 @@ int pembelian(){
         else
         {
             char choice;
+            node *current;
             insertLast(&keranjang, listProduk, pilihB);
-            // Ingin Display keranjang yg terakhir tapi gak keluar
-
-            /* node *current = l->tail->prev;
-            cout << "Nomor Transaksi:" << "\t" << current->Transaksi.noTransaksi << endl
-                 << "Produk:" << "\t\t" << current->Transaksi.namaProduk << endl
-                 << "Jumlah:" << "\t\t" << current->Transaksi.Qty << "\t" << endl
-                 << "Total Harga:" << "\t" << current->Transaksi.totalHarga << endl
-                 << endl; */
-                 
-            /* node* current = l->tail->prev->prev;
-            while (current != nullptr) {
-                cout << "Nomor Transaksi:" << "\t" << current->Transaksi.noTransaksi << endl
-                     << "Produk:" << "\t\t" << current->Transaksi.namaProduk << endl
-                     << "Jumlah:" << "\t\t" << current->Transaksi.Qty << "\t" << endl
-                     << "Total Harga:" << "\t" << current->Transaksi.totalHarga << endl
-                     << endl;
+            current = keranjang.head;
+            while (current->next != NULL)
+            {
                 current = current->next;
             }
-            cout << endl; */
+            while (current != NULL){
+                cout << endl 
+                << "Nomor Transaksi\t  : " << current->Transaksi.noTransaksi << endl
+                << "Produk\t\t  : " << current->Transaksi.namaProduk << endl
+                << "Jumlah\t\t  : " << current->Transaksi.Qty << "\t" << endl
+                << "Total Harga\t  : " << current->Transaksi.totalHarga << endl
+                << "Status Pembayaran : " << current->Transaksi.statusPembayaran << endl
+                << endl;
+                current = current->next;
+            }
+            cout << endl;
             while (1 == 1)
             {
                 cout << "Apakah pesanan sudah tepat ? (y) Ya  (n) Tidak : ";
@@ -373,6 +371,7 @@ int main(){
         }
     }
     system("pause");
+
     //membuat keranjang kosong
     createEmpty(&keranjang);
     menuUtama();
