@@ -182,8 +182,8 @@ void registrasi() {
 bool login() {
     string username, pass, line;
     bool check = false;
-    cout << "Username\t:"; cin >> username;
-    cout << "Password\t;"; cin >> pass;
+    cout << "Username\t: "; cin >> username;
+    cout << "Password\t: "; cin >> pass;
 
     ifstream userFile("dataUser.txt");
     if (userFile.is_open())
@@ -216,14 +216,13 @@ bool login() {
     {
         cout << "Something Went Wrong!" << endl;
     }
-    
+    return 0;
 }
 
 // MENAMPILKAN DAFTAR BARANG
 void displayDaftar(){
     system("cls");
-    cout << "-------- Daftar Produk --------" << endl;
-
+    cout << "------------------- Daftar Produk -------------------" << endl << endl;
     for (int i = 0; i < length; i++)
     {
         produk *pProduk = &listProduk[i]; // pointer untuk mengakses struct produk
@@ -306,12 +305,12 @@ int menuUtama(){
     {
         int pilihM;
         system("cls");
-        cout << "-------- Menu Utama --------" << endl;
-        cout << "1. Melihat Daftar Produk" <<endl
-             << "2. Pembelian" << endl
-             << "3. Melihat Histori Transaksi" << endl
-             << "4. Keluar Program " << endl
-             << "----------------------------" << endl;
+        cout << "-------- Menu Utama --------  " << endl << endl;
+        cout << "[1] Melihat Daftar Produk     " << endl
+             << "[2] Pembelian                 " << endl
+             << "[3] Melihat Histori Transaksi " << endl
+             << "[4] Keluar Program            " << endl
+             << "----------------------------  " << endl << endl;
         cout << "Pilih menu: ";
         cin >> pilihM;
 
@@ -339,6 +338,7 @@ int menuUtama(){
             break;
         }
     } 
+    return 0;
 }
 
 int main(){ 
@@ -348,7 +348,11 @@ int main(){
     while (1 == 1)
     {
         system("cls");
-        cout << "Silahkan Login / Register Terlebih dulu\n" << "1. Login\n" << "2. Register\n" ; cin >> pilih; 
+        cout << "LOGIN / REGISTER" << endl << endl;
+        cout << "[1] LOGIN" << endl;
+        cout << "[2] REGISTRASI" << endl << endl;
+        cout << "Masukkan angka\t: "; cin >> pilih; 
+        system ("CLS");
         if (pilih == 1)
         {
             valid = login();
@@ -372,8 +376,10 @@ int main(){
             system("pause");
         }
     }
+
     system("pause");
-    //membuat keranjang kosong
+
+    // membuat keranjang kosong
     createEmpty(&keranjang);
     menuUtama();
     return 0;
