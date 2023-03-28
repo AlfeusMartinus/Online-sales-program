@@ -174,7 +174,7 @@ bool login() {
     cout << "Username: " << setw(5); cin >> username; 
     cout << "Password: " << setw(5); cin >> pass;
     cout << endl << endl;
-
+    
     ifstream userFile("dataUser.txt");
     if (userFile.is_open()){
         while (getline(userFile, line))
@@ -432,8 +432,9 @@ int menuUtama(){
 }
 
 int main(){ 
-    int pilih;
+    string pilih;
     bool valid;
+    int coba;
 
     while (1 == 1)
     {
@@ -445,8 +446,17 @@ int main(){
         cout << "[1] LOGIN" << endl;
         cout << "[2] REGISTRASI" << endl << endl;
         cout << "Silahkan Pilih\t: "; cin >> pilih; 
+        try
+        {
+            coba = stoi(pilih);
+        }
+        catch(const std::invalid_argument &e)
+        {
+            continue;
+        }
+        
         system ("CLS");
-        if (pilih == 1)
+        if (coba == 1)
         {
             valid = login();
             if (valid)
@@ -459,7 +469,7 @@ int main(){
                 continue;
             }
         }
-        else if (pilih == 2)
+        else if (coba == 2)
         {
             registrasi();
             system("pause");
