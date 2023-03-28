@@ -237,7 +237,8 @@ int pembelian(){
         displayDaftar();
         cout << "No. Barang yang akan dibeli\t: ";
         cin >> pilihB;
-        if (pilihB > length)
+        
+        if (pilihB > length || pilihB < 1)
         {
             cout << "Masukan inputan yang benar" << endl;
             continue;
@@ -432,9 +433,8 @@ int menuUtama(){
 }
 
 int main(){ 
-    string pilih;
+    int pilih;
     bool valid;
-    int coba;
 
     while (1 == 1)
     {
@@ -446,17 +446,9 @@ int main(){
         cout << "[1] LOGIN" << endl;
         cout << "[2] REGISTRASI" << endl << endl;
         cout << "Silahkan Pilih\t: "; cin >> pilih; 
-        try
-        {
-            coba = stoi(pilih);
-        }
-        catch(const std::invalid_argument &e)
-        {
-            continue;
-        }
-        
+
         system ("CLS");
-        if (coba == 1)
+        if (pilih == 1)
         {
             valid = login();
             if (valid)
@@ -469,7 +461,7 @@ int main(){
                 continue;
             }
         }
-        else if (coba == 2)
+        else if (pilih == 2)
         {
             registrasi();
             system("pause");
