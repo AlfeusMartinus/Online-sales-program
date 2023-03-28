@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip> // untuk menggunakan manipulasi setw dan setfill
 #include <string> // untuk kebutuhan registrasi & login
 #include <fstream> // untuk kebutuhan registrasi & login
 #include <cstdlib> // untuk fungsi exit
@@ -77,10 +78,6 @@ void insertLast(linkedlist *l, produk listProduk[], int x){
     new_node->Transaksi.totalHarga = tempQty * listProduk[x-1].harga;
     new_node->next = NULL;
 
-    cout << "Apakah sudah dibayar? (Y/N) ";
-    cin >> new_node->Transaksi.statusPembayaran;
-
-
     if (isEmpty(keranjang))
     {
         l->head = new_node;
@@ -99,11 +96,6 @@ void insertLast(linkedlist *l, produk listProduk[], int x){
 
 // MENGHAPUS TRANSAKSI TERAKHIR
 void removeLast(linkedlist *l) {
-    if (l->tail->Transaksi.statusPembayaran == "N") {
-    cout << "Transaksi belum dibayar, tidak bisa dihapus." << endl;
-    return;
-    }
-
     if (l->head == nullptr) {
         cout << "List kosong" << endl;
         system("pause");
@@ -148,14 +140,23 @@ void displayHistory(linkedlist l){
 // PENGGUNAAN VOID UNTUK REGISTER
 void registrasi() {
     string username, pass;
-    cout << "Username\t: "; cin >> username;
-    cout << "Password\t: "; cin >> pass;
+    
+    cout << "                                    ==============================" << endl;
+    cout << "                                    |         REGISTER           |" << endl;
+    cout << "                                    ==============================" << endl << endl;
+    cout << "Username: " << setw(5); cin >> username; 
+    cout << "Password: " << setw(5); cin >> pass;
+    cout << endl << endl;
 
     ofstream userFile("dataUser.txt", ios::app);
     if (userFile.is_open()){
         userFile << username << " " << pass << endl;
         userFile.close();
-        cout << "Registrasi Berhasil" << endl;
+        cout << "\033[32m";
+        cout << "=====================" << endl;
+        cout << " Registrasi Berhasil "<< endl;
+        cout << "=====================" << endl << endl;
+        cout << "\033[0m";
     }
     else{
         cout << "Something Went Wrong!" << endl;
@@ -166,8 +167,13 @@ void registrasi() {
 bool login() {
     string username, pass, line;
     bool check = false;
-    cout << "Username\t: "; cin >> username;
-    cout << "Password\t: "; cin >> pass;
+
+    cout << "                                   ==============================" << endl;
+    cout << "                                   |           LOGIN            |" << endl;
+    cout << "                                   ==============================" << endl << endl;
+    cout << "Username: " << setw(5); cin >> username; 
+    cout << "Password: " << setw(5); cin >> pass;
+    cout << endl << endl;
 
     ifstream userFile("dataUser.txt");
     if (userFile.is_open()){
@@ -184,10 +190,19 @@ bool login() {
         }
         userFile.close();
         if (check){
-            cout << "Login Berhasil" << endl;
+            cout << "\033[32m";
+            cout << "=====================" << endl;
+            cout << "   Login Berhasil    " << endl;
+            cout << "=====================" << endl << endl;
+            cout << "\033[0m";
         }
         else{
-            cout << "Username / Password salah" << endl;
+            cout << "\033[31m";
+            cout << "==========================" << endl;
+            cout << "    Username / Password   " << endl;
+            cout << "          Salah           " << endl;
+            cout << "==========================" << endl << endl;
+            cout << "\033[0m";
         }
         return check;
     }
@@ -255,7 +270,7 @@ int pembelian(){
                 cin >> choice;
                 if (choice == "y" || choice == "Y")
                 {
-                    cout << "Apakah sudah dibayar? (Y/N) ";
+                    cout << "Apakah sudah dibayar ? (y) Ya (n) Belum ";
                     cin >> choice;
                     if (choice == "y" || choice == "Y")
                     {
@@ -330,7 +345,6 @@ int Pembayaran()
                     {
                         cout << "No. Transaksi tidak terdaftar" << endl;
                         system("pause");
-                        // Pembayaran();
                         break;
                     }
                     current2 = current;
@@ -367,7 +381,6 @@ int Pembayaran()
                 break;
         }
     }
-    return 0;
 }
 
 // MENAMPILKAN MENU UTAMA
@@ -425,10 +438,13 @@ int main(){
     while (1 == 1)
     {
         system("cls");
-        cout << "LOGIN / REGISTER" << endl << endl;
+        cout << "                                     ===============================================" << endl;
+        cout << "                                     |                  WELCOME                    |" << endl;
+        cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
+        cout << "                                     ===============================================" << endl << endl << endl;
         cout << "[1] LOGIN" << endl;
         cout << "[2] REGISTRASI" << endl << endl;
-        cout << "Masukkan angka\t: "; cin >> pilih; 
+        cout << "Silahkan Pilih\t: "; cin >> pilih; 
         system ("CLS");
         if (pilih == 1)
         {
@@ -462,4 +478,4 @@ int main(){
     createEmpty(&keranjang);
     menuUtama();
     return 0;
-}   
+}
