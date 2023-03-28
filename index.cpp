@@ -15,7 +15,7 @@ struct produk
 };
 
 produk listProduk[] = {
-    {"Hoodie Naruto", "xxxxxxxxxxxxxx", 50000, 32}, {"Kaos Mixue", "xxxxxxxxxxxxxx", 72340, 20}};
+    {"Hoodie Naruto", "Hoodie dengan berbagai ukuran dari minimal hingga maksimal, dapat dipastikan nyaman dipakai", 135000, 50}, {"Kaos Mixue", "Kaos dengan ukuran S saja, karena produksi terbatas, Segera Checkout", 72340, 3}, {"Erigo Couch Jacket", "Jaket bisa di pakai formal maupun casual (santai abis)", 76500, 59}};
 
 // GLOBAL VARIABEL
 int length = sizeof(listProduk) / sizeof(listProduk[0]);
