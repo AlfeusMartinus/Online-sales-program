@@ -15,7 +15,7 @@ struct produk
 };
 
 produk listProduk[] = {
-    {"Hoodie Naruto", "Hoodie dengan berbagai ukuran dari minimal hingga maksimal, dapat dipastikan nyaman dipakai", 135000, 50}, {"Kaos Mixue", "Kaos dengan ukuran S saja, karena produksi terbatas, Segera Checkout", 72340, 3}, {"Erigo Couch Jacket", "Jaket bisa di pakai formal maupun casual (santai abis)", 76500, 59}};
+    {"Hoodie Naruto", "Hoodie dengan berbagai ukuran dari minimal hingga maksimal", 135000, 50}, {"Kaos Mixue", "Kaos dengan ukuran S saja", 72340, 3}, {"Erigo Couch Jacket", "Jaket bisa di pakai formal maupun casual (santai abis)", 76500, 59}};
 
 // GLOBAL VARIABEL
 int length = sizeof(listProduk) / sizeof(listProduk[0]);
@@ -64,9 +64,9 @@ bool isEmpty(linkedlist l)
 void insertLast(linkedlist *l, produk listProduk[], int x){
     int tempQty;
     string tempNoTrans, choice;
-    cout << "Berapa banyak produk\t\t: ";
+    cout << "2. Jumlah\t\t\t\t\t: ";
     cin >> tempQty;
-    cout << "Masukan nomor transaksi\t\t: ";
+    cout << "3. Nomor Transaksi (Cth.ID-01)\t\t\t: ";
     cin >> tempNoTrans;
 
 
@@ -215,7 +215,12 @@ bool login() {
 // MENAMPILKAN DAFTAR BARANG
 void displayDaftar(){
     system("cls");
-    cout << "------------------- Daftar Produk -------------------" << endl << endl;
+    cout << "\033[38;5;202m";
+    cout << "                                     ===============================================" << endl;
+    cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
+    cout << "                                     ===============================================" << endl << endl << endl;
+    cout << "\033[0m";
+    cout << "================== DAFTAR PRODUK ==================" << endl << endl;
     for (int i = 0; i < length; i++)
     {
         produk *pProduk = &listProduk[i]; // pointer untuk mengakses struct produk
@@ -235,7 +240,9 @@ int pembelian(){
     while (1 == 1)
     {
         displayDaftar();
-        cout << "No. Barang yang akan dibeli\t: ";
+        cout << "\n\n";
+        cout << "=================================" << endl;
+        cout << "1. Masukkan Nomor Produk Yang Akan Dibeli\t: ";
         cin >> pilihB;
         
         if (pilihB > length || pilihB < 1)
@@ -254,8 +261,9 @@ int pembelian(){
                 current = current->next;
             }
             current2 = current;
+            system("CLS");
             while (current != NULL){
-                cout << endl 
+                cout  
                 << "Nomor Transaksi\t  : " << current->Transaksi.noTransaksi << endl
                 << "Produk\t\t  : " << current->Transaksi.namaProduk << endl
                 << "Jumlah\t\t  : " << current->Transaksi.Qty << "\t" << endl
@@ -267,11 +275,13 @@ int pembelian(){
             cout << endl;
             while (1 == 1)
             {
-                cout << "Apakah pesanan sudah tepat ? (y) Ya  (n) Tidak : ";
+                cout << "Pesanan ini sudah sesuai?" << endl;
+                cout << "[y]Ya / [n]Tidak\t: ";
                 cin >> choice;
                 if (choice == "y" || choice == "Y")
                 {
-                    cout << "Apakah sudah dibayar ? (y) Ya (n) Belum ";
+                    cout << "Sudahkah pembayaran dilakukan?" << endl;
+                    cout << "[y]Ya / [n]Tidak\t: ";
                     cin >> choice;
                     if (choice == "y" || choice == "Y")
                     {
@@ -308,17 +318,21 @@ int pembelian(){
     return 0;
 }
 
-int Pembayaran()
-{
+int Pembayaran(){
     while (1 == 1)
     {
         system("CLS");
         int subMenu;
-        cout << "------- MENU PEMBAYARAN -------" << endl << endl;
-        cout << "1. Tampilkan History Pembayaran" << endl;
-        cout << "2. Bayar Transaksi" << endl;
-        cout << "3. Kembali ke Menu Utama" << endl;
-        cout << "Pilihan Anda: ";
+        cout << "\033[38;5;202m";
+        cout << "                                     ===============================================" << endl;
+        cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
+        cout << "                                     ===============================================" << endl << endl << endl;
+        cout << "\033[0m";
+        cout << "====== MENU PEMBAYARAN ======" << endl;
+        cout << "[1] Histori Pembayaran" << endl;
+        cout << "[2] Bayar" << endl;
+        cout << "[3] Kembali" << endl << endl;
+        cout << "Pilihan Menu: ";
         cin >> subMenu;
         switch (subMenu) {
             case 1:
@@ -326,6 +340,7 @@ int Pembayaran()
                 system("pause");
                 break;
             case 2:
+                system("cls");
                 if (isEmpty(keranjang)) 
                 {
                     cout << "Tidak ada transaksi yang harus dibayar." << endl;
@@ -363,12 +378,16 @@ int Pembayaran()
                     
                     if (current2->Transaksi.statusPembayaran == "Sudah Selesai")
                     {
-                        cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " Sudah Selesai, Tidak Perlu Dibayar" << endl;
+                        cout << "\033[32m";
+                        cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " Sudah Selesai, Tidak Perlu Dibayar" << endl << endl;
+                        cout << "\033[0m";
                     }
                     else if (current2->Transaksi.statusPembayaran == "Belum Selesai")
                     {
+                        cout << "\033[32m";
                         current2->Transaksi.statusPembayaran = "Sudah Selesai";    
-                        cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " telah dibayar." << endl;
+                        cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " telah dibayar." << endl << endl;
+                        cout << "\033[0m";
                     }
                 }
                 system("pause");
@@ -391,13 +410,17 @@ int menuUtama(){
     {
         int pilihM;
         system("cls");
-        cout << "-------- Menu Utama --------  " << endl << endl;
+        cout << "\033[38;5;202m";
+        cout << "                                     ===============================================" << endl;
+        cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
+        cout << "                                     ===============================================" << endl << endl << endl;
+        cout << "\033[0m";
+        cout << "========= MENU UTAMA =========" << endl;
         cout << "[1] Melihat Daftar Produk     " << endl
              << "[2] Pembelian                 " << endl
              << "[3] Melihat Histori Transaksi " << endl
              << "[4] Pembayaran                " << endl
-             << "[5] Keluar Program            " << endl
-             << "----------------------------  " << endl << endl;
+             << "[5] Keluar Program            " << endl << endl;
         cout << "Pilih menu: ";
         cin >> pilihM;
 
@@ -420,6 +443,7 @@ int menuUtama(){
             system("pause");
             break;
         case 5: 
+            system("CLS");
             exitloop = true;
             cout << "Menutup Program . . . ." << endl;
             exit(0);
@@ -439,10 +463,12 @@ int main(){
     while (1 == 1)
     {
         system("cls");
+        cout << "\033[38;5;202m";
         cout << "                                     ===============================================" << endl;
         cout << "                                     |                  WELCOME                    |" << endl;
         cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
         cout << "                                     ===============================================" << endl << endl << endl;
+        cout << "\033[0m";
         cout << "[1] LOGIN" << endl;
         cout << "[2] REGISTRASI" << endl << endl;
         cout << "Silahkan Pilih\t: "; cin >> pilih; 
