@@ -3,6 +3,7 @@
 #include <string> // untuk kebutuhan registrasi & login
 #include <fstream> // untuk kebutuhan registrasi & login
 #include <cstdlib> // untuk fungsi exit
+#include <conio.h> // untuk getch password
 using namespace std;
 
 // PENGGUNAAN STRUCT
@@ -20,13 +21,14 @@ produk listProduk[] = {
 // GLOBAL VARIABEL
 int length = sizeof(listProduk) / sizeof(listProduk[0]);
 
+int menuUtama();
 
 struct transaksi
 {
     string noTransaksi;
     string namaProduk;
     int Qty;
-    double totalHarga;
+    int totalHarga;
     string statusPembayaran;
 };
 
@@ -65,6 +67,12 @@ void insertLast(linkedlist *l, produk listProduk[], int x){
     string tempNoTrans, choice;
     cout << "2. Jumlah\t\t\t\t\t: ";
     cin >> tempQty;
+    if ((listProduk[x-1].stok - tempQty) < 0)
+    {
+        cout << "Maaf Jumlah melebihi stok" << endl;
+        system("pause");
+        menuUtama();
+    }
     cout << "3. Nomor Transaksi (Cth.ID-01)\t\t\t: ";
     cin >> tempNoTrans;
 
@@ -171,7 +179,33 @@ bool login() {
     cout << "                                   |           LOGIN            |" << endl;
     cout << "                                   ==============================" << endl << endl;
     cout << "Username: " << setw(5); cin >> username; 
-    cout << "Password: " << setw(5); cin >> pass;
+    cout << "Password: " << setw(5); cin >> pass; 
+    // char input;
+    // string password = "";
+    // cout << "Password: " << setw(5); 
+    // while (true)
+    // {
+    //     input = getch();
+    //     if (input == 13)
+    //     {
+    //         break;
+    //     }
+    //     else if (input == 8)
+    //     {
+    //         if (password.length() > 0)
+    //         {
+    //             password.pop_back();
+    //             cout << "\b \b ";
+    //         }
+    //     }
+    //     else if (input >= 32 && input <= 126)
+    //     {
+    //         password += input;
+    //         cout << "*";
+    //     }
+    // }
+
+    
     cout << endl << endl;
     
     ifstream userFile("dataUser.txt");
@@ -230,8 +264,6 @@ void displayDaftar(){
              << endl;
     }
 }
-
-int menuUtama();
 
 // FITUR PEMBELIAN/PENAMBAHAN TRANSAKSI
 int pembelian(){
