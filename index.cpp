@@ -34,7 +34,6 @@ struct node
 {
     transaksi Transaksi;
     node *next;
-    node *prev;
 };
 
 struct linkedlist
@@ -286,11 +285,21 @@ int pembelian(){
                     if (choice == "y" || choice == "Y")
                     {
                         current2->Transaksi.statusPembayaran = "Sudah Selesai";
+                        cout << "\033[32m";
+                        cout << "Produk berhasil ditambahkan ke keranjang" << endl;
+                        cout << "\033[0m \n\n";
+                        system("pause");
+                        listProduk[pilihB-1].stok = (listProduk[pilihB-1].stok) - (current->Transaksi.Qty);
                         return menuUtama();
                     }
                     else if (choice == "n" || choice == "N")
                     {
                         current2->Transaksi.statusPembayaran = "Belum Selesai";
+                        cout << "\n\n";
+                        cout << "\033[32m";
+                        cout << "Produk berhasil ditambahkan ke keranjang" << endl;
+                        cout << "\033[0m \n\n";
+                        system("pause");
                         return menuUtama();
                     }
                     else
