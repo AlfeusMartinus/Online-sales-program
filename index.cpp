@@ -16,7 +16,10 @@ struct produk
 };
 
 produk listProduk[] = {
-    {"HOODIE AHHA", "Hoodie dengan berbagai ukuran dari minimal hingga maksimal", 135000, 50}, {"KAOS IBU HAMIL", "Kaos dengan ukuran S saja", 72340, 3}, {"JAKET ZIPPER", "Jaket bisa di pakai formal maupun casual (santai abis)", 76500, 59}, {"ASUS TUF GAMING", "Laptop bisa dipakai untuk ngoding c++", 125000, 11}};
+    {"HOODIE AHHA", "Hoodie dengan berbagai ukuran dari minimal hingga maksimal", 135000, 50},
+    {"KAOS IBU HAMIL", "Kaos dengan ukuran S saja", 72340, 3},
+    {"JAKET ZIPPER", "Jaket bisa di pakai formal maupun casual (santai abis)", 76500, 59},
+    {"ASUS TUF GAMING", "Laptop bisa dipakai untuk ngoding c++", 125000, 11}};
 
 // GLOBAL VARIABEL
 int length = sizeof(listProduk) / sizeof(listProduk[0]);
@@ -46,15 +49,16 @@ struct linkedlist
 linkedlist keranjang;
 
 // MEMBUAT LIST KOSONG
-void createEmpty(linkedlist *l){
-    l->head = NULL;
-    l->tail = NULL;
+void createEmpty(linkedlist *list)
+{
+    list->head = NULL;
+    list->tail = NULL;
 }
 
 // CEK STATUS LIST
-bool isEmpty(linkedlist l)
+bool isEmpty(linkedlist list)
 {
-    if (l.head == NULL)
+    if (list.head == NULL)
     {
         return true;
     }
@@ -62,7 +66,8 @@ bool isEmpty(linkedlist l)
 }
 
 // MENAMBAHKAN TRANSAKSI
-void insertLast(linkedlist *l, produk listProduk[], int x){
+void insertLast(linkedlist *list, produk listProduk[], int x)
+{
     int tempQty;
     string tempNoTrans, choice;
     cout << "2. Jumlah\t\t\t\t\t: ";
@@ -87,12 +92,12 @@ void insertLast(linkedlist *l, produk listProduk[], int x){
 
     if (isEmpty(keranjang))
     {
-        l->head = new_node;
-        l->head->next = NULL;
+        list->head = new_node;
+        list->head->next = NULL;
     }
     else
     {
-        current = l->head;
+        current = list->head;
         while (current->next != NULL)
         {
             current = current->next;
@@ -102,35 +107,40 @@ void insertLast(linkedlist *l, produk listProduk[], int x){
 }
 
 // MENGHAPUS TRANSAKSI TERAKHIR
-void removeLast(linkedlist *l) {
-    if (l->head == nullptr) {
+void removeLast(linkedlist *list)
+{
+    if (list->head == NULL)
+    {
         cout << "List kosong" << endl;
         system("pause");
         return;
     }
-    else if (l->head->next == nullptr) {
-        delete l->head;
-        l->head = nullptr;
+    else if (list->head->next == NULL)
+    {
+        delete list->head;
+        list->head = NULL;
     }
     else {
-        node *temp = nullptr;
-        node *current = l->head;
-        while (current->next != nullptr) {
+        node *temp = NULL;
+        node *current = list->head;
+        while (current->next != NULL)
+        {
             temp = current;
             current = current->next;
         }
-        temp->next = nullptr;
+        temp->next = NULL;
         delete current;
     }
 }
 
 // MENAMPILKAN HISTORY TRANSAKSI
-void displayHistory(linkedlist l){
+void displayHistory(linkedlist list)
+{
     system("CLS");
-    if(isEmpty(l))
+    if (isEmpty(list))
         cout << "List kosong" << endl;
     else{
-        node *current = l.head;
+        node *current = list.head;
         while (current != NULL){
             cout << "Nomor Transaksi\t  : " << current->Transaksi.noTransaksi << endl
             << "Produk\t\t  : " << current->Transaksi.namaProduk << endl
@@ -157,7 +167,8 @@ void registrasi() {
 
     ofstream userFile("dataUser.txt", ios::app);
     if (userFile.is_open()){
-        userFile << username << " " << pass << endl;
+        userFile << "username : " << username << " | "
+                 << "password = " << pass << endl;
         userFile.close();
         cout << "\033[32m";
         cout << "=====================" << endl;
@@ -212,9 +223,10 @@ bool login() {
     if (userFile.is_open()){
         while (getline(userFile, line))
         {
-            size_t pos = line.find(" ");
-            string u = line.substr(0, pos);
-            string p = line.substr(pos+1);
+            size_t pos = line.find(" | ");
+            size_t pos2 = line.find("=");
+            string u = line.substr(11, pos - 11);
+            string p = line.substr(pos2 + 2);
             if (u == username && p == pass)
             {
                 check = true;
@@ -254,15 +266,65 @@ void displayDaftar(){
     cout << "                                     ===============================================" << endl << endl << endl;
     cout << "\033[0m";
     cout << "================== DAFTAR PRODUK ==================" << endl << endl;
+    // for (int i = 0; i < length; i++)
+    // {
+    //     produk *pProduk = &listProduk[i]; // pointer untuk mengakses struct produk
+    //     cout << i + 1 << ". " << pProduk->nama << endl
+    //          << "   Deskripsi \t\t: " << pProduk->deskripsi << endl
+    //          << "   Harga \t\t: " << pProduk->harga << endl
+    //          << "   Stok \t\t: " << pProduk->stok << endl
+    //          << endl;
+    // }
+
+    // TAMPILAN TABEL
+    int colWidths[] = {3, 15, 70, 15, 5, 16};
+
+    // Membuat header tabel
+    cout << setfill('-');
+    for (int i = 0; i < 6; i++)
+    {
+        cout << setw(colWidths[i]) << "+";
+    }
+    cout << endl;
+
+    cout << setfill(' ');
+    // Header tabel
+    cout << "| " << setw(colWidths[0]) << "No"
+         << " | "
+         << setw(colWidths[1]) << "Nama"
+         << " | "
+         << setw(colWidths[2]) << "Deskripsi"
+         << " | "
+         << setw(colWidths[3]) << "Harga"
+         << " | "
+         << setw(colWidths[4]) << "Stok"
+         << " |" << endl;
+
+    cout << setfill('-');
+    for (int i = 0; i < 6; i++)
+    {
+        cout << setw(colWidths[i]) << "+";
+    }
+    cout << endl;
+
+    cout << setfill(' ');
+    // Isi tabel
     for (int i = 0; i < length; i++)
     {
         produk *pProduk = &listProduk[i]; // pointer untuk mengakses struct produk
-        cout << i + 1 << ". " << pProduk->nama << endl
-             << "   Deskripsi \t\t:" << pProduk->deskripsi << endl
-             << "   Harga \t\t:" << pProduk->harga << endl
-             << "   Stok \t\t:" << pProduk->stok << endl
-             << endl;
+        cout << "| " << setw(colWidths[0]) << i + 1 << " | "
+             << setw(colWidths[1]) << pProduk->nama << " | "
+             << setw(colWidths[2]) << pProduk->deskripsi << " | "
+             << setw(colWidths[3]) << pProduk->harga << " | "
+             << setw(colWidths[4]) << pProduk->stok << " |" << endl;
     }
+
+    cout << setfill('-');
+    for (int i = 0; i < 6; i++)
+    {
+        cout << setw(colWidths[i]) << "+";
+    }
+    cout << endl;
 }
 
 // FITUR PEMBELIAN/PENAMBAHAN TRANSAKSI
