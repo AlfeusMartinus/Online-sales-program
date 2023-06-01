@@ -279,7 +279,6 @@ void displayDaftar(){
     // TAMPILAN TABEL
     int colWidths[] = {3, 15, 70, 15, 5, 16};
 
-    // Membuat header tabel
     cout << setfill('-');
     for (int i = 0; i < 6; i++)
     {
@@ -288,7 +287,6 @@ void displayDaftar(){
     cout << endl;
 
     cout << setfill(' ');
-    // Header tabel
     cout << "| " << setw(colWidths[0]) << "No"
          << " | "
          << setw(colWidths[1]) << "Nama"
@@ -308,10 +306,9 @@ void displayDaftar(){
     cout << endl;
 
     cout << setfill(' ');
-    // Isi tabel
     for (int i = 0; i < length; i++)
     {
-        produk *pProduk = &listProduk[i]; // pointer untuk mengakses struct produk
+        produk *pProduk = &listProduk[i];
         cout << "| " << setw(colWidths[0]) << i + 1 << " | "
              << setw(colWidths[1]) << pProduk->nama << " | "
              << setw(colWidths[2]) << pProduk->deskripsi << " | "
