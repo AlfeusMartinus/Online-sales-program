@@ -185,36 +185,29 @@ void registrasi() {
 bool login() {
     string username, pass, line;
     bool check = false;
+    char input;
 
     cout << "                                   ==============================" << endl;
     cout << "                                   |           LOGIN            |" << endl;
     cout << "                                   ==============================" << endl << endl;
     cout << "Username: " << setw(5); cin >> username; 
-    cout << "Password: " << setw(5); cin >> pass; 
-    // char input;
-    // string password = "";
-    // cout << "Password: " << setw(5); 
-    // while (true)
-    // {
-    //     input = getch();
-    //     if (input == 13)
-    //     {
-    //         break;
-    //     }
-    //     else if (input == 8)
-    //     {
-    //         if (password.length() > 0)
-    //         {
-    //             password.pop_back();
-    //             cout << "\b \b ";
-    //         }
-    //     }
-    //     else if (input >= 32 && input <= 126)
-    //     {
-    //         password += input;
-    //         cout << "*";
-    //     }
-    // }
+    // cout << "Password: " << setw(5);
+    cout << "Password: ";
+    pass = "";
+    while (true) {
+        input = getch();
+        if (input == 13) {
+            break;
+        } else if (input == 8) {
+            if (pass.length() > 0) {
+                pass.pop_back();
+                cout << "\b \b";
+            }
+        } else if (input >= 32 && input <= 126) {
+            pass += input;
+            cout << "*";
+        }
+    }
 
     
     cout << endl << endl;
