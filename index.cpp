@@ -65,6 +65,14 @@ bool isEmpty(linkedlist list)
     return false;
 }
 
+// GENERATE NOMOR TRANSAKSI
+string noTransaksiAcak(){
+    static int counter = 1;
+    string transaksiNomer = "OLS-" + to_string(counter);
+    counter++;
+    return transaksiNomer;
+}
+
 // MENAMBAHKAN TRANSAKSI
 void insertLast(linkedlist *list, produk listProduk[], int x)
 {
@@ -78,8 +86,10 @@ void insertLast(linkedlist *list, produk listProduk[], int x)
         system("pause");
         menuUtama();
     }
-    cout << "3. Nomor Transaksi (Cth.ID-01)\t\t\t: ";
-    cin >> tempNoTrans;
+    cout << "3. Nomor Transaksi \t\t\t\t: ";
+    cout << noTransaksiAcak() << endl;
+    system("pause");
+    tempNoTrans = noTransaksiAcak();
 
 
     node *new_node, *current;
@@ -457,16 +467,16 @@ int Pembayaran(){
                         break;
                     }
                     current2 = current;
-                    while (current != NULL){
-                        cout << endl 
-                        << "Nomor Transaksi\t  : " << current2->Transaksi.noTransaksi << endl
-                        << "Produk\t\t  : " << current2->Transaksi.namaProduk << endl
-                        << "Jumlah\t\t  : " << current2->Transaksi.Qty << endl
-                        << "Total Harga\t  : " << current2->Transaksi.totalHarga << endl
-                        << "Status Pembayaran : " << current2->Transaksi.statusPembayaran << endl
-                        << endl;
-                        break;
-                    }
+                    // while (current != NULL){
+                    //     cout << endl 
+                    //     << "Nomor Transaksi\t  : " << current2->Transaksi.noTransaksi << endl
+                    //     << "Produk\t\t  : " << current2->Transaksi.namaProduk << endl
+                    //     << "Jumlah\t\t  : " << current2->Transaksi.Qty << endl
+                    //     << "Total Harga\t  : " << current2->Transaksi.totalHarga << endl
+                    //     << "Status Pembayaran : " << current2->Transaksi.statusPembayaran << endl
+                    //     << endl;
+                    //     break;
+                    // }
                     cout << endl;
                     
                     if (current2->Transaksi.statusPembayaran == "Sudah Selesai")
