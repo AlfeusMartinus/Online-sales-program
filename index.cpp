@@ -102,6 +102,7 @@ void printDaftar (tree *root, int parentId)
 void printKategori(tree *root)
 {
     int pil;
+    system("cls");
     cout << "===============================" <<
     endl << "         Menu Kategori" <<
     endl << "===============================" <<
@@ -127,6 +128,38 @@ void printKategori(tree *root)
         printKategori(root);
     }
     
+};
+
+void minusStok(tree *root, int pil, int minStok)
+{
+    if (pil >= 1 && pil < 4)
+    {
+        pil = pil + 100;
+        minusStok(root, pil, minStok);
+    }
+    else if (pil >= 4 && pil < 7)
+    {
+        pil = (pil - 3) + 200;
+        minusStok(root, pil, minStok);
+    }
+    else if (pil >= 7 && pil < 10)
+    {
+        pil = (pil - 6) + 300;
+        minusStok(root, pil, minStok);
+    }
+    
+     if (root != NULL)
+    {
+        if (root->data.id == pil)
+        {
+            root->data.stok = root->data.stok - minStok;
+        }
+        else
+        {
+            minusStok(root->left, pil, minStok);
+            minusStok(root->right, pil, minStok);
+        }
+    }
 }
 
 produk listProduk[] = {
@@ -503,6 +536,7 @@ int pembelian(){
                         cout << "\033[0m \n\n";
                         system("pause");
                         listProduk[pilihB-1].stok = (listProduk[pilihB-1].stok) - (current->Transaksi.Qty);
+                        minusStok(pohon, pilihB, current->Transaksi.Qty);
                         return menuUtama();
                     }
                     else if (choice == "n" || choice == "N")
