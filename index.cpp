@@ -13,13 +13,132 @@ struct produk
     string deskripsi;
     double harga;
     int stok;
+    int id;
+    string kategori;
 };
 
+struct tree
+{
+    produk data;
+    tree *left, *right;
+};
+tree *pohon, *root;
+
+void deklarasi()
+{
+    pohon = NULL;
+};
+
+void inputTree(tree **root, string nama, string deskripsi, double harga, int stok, int id, string kategori)
+{
+    tree *newnode;
+    if ((*root) == NULL)
+    {
+        newnode = new tree;
+        newnode->data.nama = nama;
+        newnode->data.deskripsi = deskripsi;
+        newnode->data.harga = harga;
+        newnode->data.stok = stok;
+        newnode->data.id = id;
+        newnode->data.kategori = kategori;
+        newnode->left = newnode->right = NULL;
+
+        (*root) = newnode;
+        (*root)->data.id = id;
+        (*root)->left = (*root)->right = NULL;
+    }
+    else if (id < (*root)->data.id)
+    {
+        inputTree(&(*root)->left, nama, deskripsi, harga, stok, id, kategori);
+    }
+    else
+    {
+        inputTree(&(*root)->right, nama, deskripsi, harga, stok, id, kategori);
+    }
+};
+
+void listingProduk()
+{
+    deklarasi();
+    inputTree(&pohon, "", "", 0, 0, 270, "Main");
+    inputTree(&pohon, "", "", 0, 0, 150, "Group 1");
+    inputTree(&pohon, "", "", 0, 0, 100, "Pakaian");
+    inputTree(&pohon, "HOODIE AHHA", "HOODIE DENGAN BERBAGAI UKURAN DARI MINIMAL HINGGA MAKSIMAL", 455000, 50, 101, "Pakaian");
+    inputTree(&pohon, "KAOS IBU HAMIL", "KAOS DENGAN UKURAN S SAJA", 95000, 3, 102, "Pakaian");
+    inputTree(&pohon, "JAKET ZIPPER", "JAKET BISA DI PAKAI FORMAL MAUPUN CASUAL (SANTAI ABIS)", 300500, 36, 103, "Pakaian");
+    inputTree(&pohon, "", "", 0, 0, 200, "Elektronik");
+    inputTree(&pohon, "ASUS TUF GAMING", "LAPTOP BISA DIPAKAI UNTUK NGODING C++", 15222000, 11, 201, "Elektronik");
+    inputTree(&pohon, "GALAXY Z FOLD4", "HP SAMSUNG LIPAT CANGGIH UNTUK ANDA", 7999000, 5, 202, "Elektronik");
+    inputTree(&pohon, "LG SMART TV 32", "TV CERDAS LEBIH CERDAS DARI ANDA", 1250000, 7, 203, "Elektronik");
+    inputTree(&pohon, "", "", 0, 0, 350, "Group 2");
+    inputTree(&pohon, "", "", 0, 0, 300, "Makanan");
+    inputTree(&pohon, "BASRENG PEDAS", "BASRENG SEUHAH DENGAN DAUN JERUK", 25000, 15, 301, "Makanan");
+    inputTree(&pohon, "EAT SAMBEL", "SAMBEL TIKTOKERS YANG ENAK", 35500, 100, 302, "Makanan");
+    inputTree(&pohon, "ROTI AOKA", "ROTI BUKAN SEKEDAR ROTI, TAPI ROTI ENAK", 2500, 29, 303, "Makanan");
+};
+
+void printDaftar (tree *root, int parentId)
+{
+    if (root != NULL)
+    {
+        if (root->data.id >= parentId && root->data.id < (parentId + 5))
+        {
+             if (root->left != NULL)
+                cout << root->left->data.id << endl;
+            if (root->right != NULL)
+                cout << root->right->data.id << endl;
+
+            printDaftar(root->left, parentId);
+            printDaftar(root->right, parentId);
+        }
+        else
+        {
+            printDaftar(root->left, parentId);
+            printDaftar(root->right, parentId);
+        }
+    } 
+};
+
+void printKategori(tree *root)
+{
+    int pil;
+    cout << "===============================" <<
+    endl << "         Menu Kategori" <<
+    endl << "===============================" <<
+    endl << "1. Pakaian" <<
+    endl << "2. Elektronik" <<
+    endl << "3. Makanan" <<
+    endl << "0. Menu Utama" <<
+    endl << "===============================" <<
+    endl << "Pilih menu kategori : ";
+    cin >> pil;
+    if (pil > 0 && pil < 4)
+    {
+        pil = pil * 100;
+        system("cls");
+        printDaftar(root, pil);
+    }
+    else if (pil == 0)
+    {
+        return;
+    }
+    else
+    {
+        printKategori(root);
+    }
+    
+}
+
 produk listProduk[] = {
-    {"HOODIE AHHA", "HOODIE DENGAN BERBAGAI UKURAN DARI MINIMAL HINGGA MAKSIMAL", 135000, 50},
-    {"KAOS IBU HAMIL", "KAOS DENGAN UKURAN S SAJA", 72340, 3},
-    {"JAKET ZIPPER", "JAKET BISA DI PAKAI FORMAL MAUPUN CASUAL (SANTAI ABIS)", 76500, 59},
-    {"ASUS TUF GAMING", "LAPTOP BISA DIPAKAI UNTUK NGODING C++", 125000, 11}};
+    {"HOODIE AHHA", "HOODIE DENGAN BERBAGAI UKURAN DARI MINIMAL HINGGA MAKSIMAL", 455000, 50, 101},
+    {"KAOS IBU HAMIL", "KAOS DENGAN UKURAN S SAJA", 95000, 3, 102},
+    {"JAKET ZIPPER", "JAKET BISA DI PAKAI FORMAL MAUPUN CASUAL (SANTAI ABIS)", 300500, 36, 103},
+    {"ASUS TUF GAMING", "LAPTOP BISA DIPAKAI UNTUK NGODING C++", 15222000, 11, 201},
+    {"GALAXY Z FOLD4", "HP SAMSUNG LIPAT CANGGIH UNTUK ANDA", 7999000, 5, 202},
+    {"LG SMART TV 32", "TV CERDAS LEBIH CERDAS DARI ANDA", 1250000, 7, 203},
+    {"BASRENG PEDAS", "BASRENG SEUHAH DENGAN DAUN JERUK", 25000, 15, 401},
+    {"EAT SAMBEL", "SAMBEL TIKTOKERS YANG ENAK", 35500, 100, 402},
+    {"ROTI AOKA", "ROTI BUKAN SEKEDAR ROTI, TAPI ROTI ENAK", 2500, 29, 403}};
 
 // GLOBAL VARIABEL
 int length = sizeof(listProduk) / sizeof(listProduk[0]);
@@ -530,7 +649,7 @@ int menuUtama(){
         switch (pilihM)
         {
         case 1:
-            displayDaftar();
+            printKategori(pohon);
             system("pause");
             break;
         case 2:
@@ -562,6 +681,7 @@ int menuUtama(){
 int main(){ 
     int pilih;
     bool valid;
+    listingProduk();
 
     while (1 == 1)
     {
