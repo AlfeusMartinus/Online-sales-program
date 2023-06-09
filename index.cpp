@@ -4,6 +4,8 @@
 #include <fstream> // untuk kebutuhan registrasi & login
 #include <cstdlib> // untuk fungsi exit
 #include <conio.h> // untuk getch password
+#include <ctime> // untuk waktu
+#include <windows.h>
 using namespace std;
 
 // PENGGUNAAN STRUCT
@@ -11,10 +13,11 @@ struct produk
 {
     string nama;
     string deskripsi;
-    double harga;
+    long long int harga;
     int stok;
     int id;
     string kategori;
+    string vAccount;
 };
 
 struct tree
@@ -24,12 +27,35 @@ struct tree
 };
 tree *pohon, *root;
 
+struct transaksi
+{
+    string noTransaksi;
+    string namaProduk;
+    int Qty;
+    long long int totalHarga;
+    string statusPembayaran;
+    string VAccount;
+};
+
+struct node
+{
+    transaksi Transaksi;
+    node *next;
+};
+
+struct linkedlist
+{
+    node *head;
+    node *tail;
+};
+linkedlist keranjang;
+
 void deklarasi()
 {
     pohon = NULL;
 };
 
-void inputTree(tree **root, string nama, string deskripsi, double harga, int stok, int id, string kategori)
+void inputTree(tree **root, string nama, string deskripsi, double harga, int stok, int id, string kategori, string vAccount)
 {
     tree *newnode;
     if ((*root) == NULL)
@@ -41,6 +67,7 @@ void inputTree(tree **root, string nama, string deskripsi, double harga, int sto
         newnode->data.stok = stok;
         newnode->data.id = id;
         newnode->data.kategori = kategori;
+        newnode->data.vAccount = vAccount;
         newnode->left = newnode->right = NULL;
 
         (*root) = newnode;
@@ -49,32 +76,32 @@ void inputTree(tree **root, string nama, string deskripsi, double harga, int sto
     }
     else if (id < (*root)->data.id)
     {
-        inputTree(&(*root)->left, nama, deskripsi, harga, stok, id, kategori);
+        inputTree(&(*root)->left, nama, deskripsi, harga, stok, id, kategori, vAccount);
     }
     else
     {
-        inputTree(&(*root)->right, nama, deskripsi, harga, stok, id, kategori);
+        inputTree(&(*root)->right, nama, deskripsi, harga, stok, id, kategori, vAccount);
     }
 };
 
 void listingProduk()
 {
     deklarasi();
-    inputTree(&pohon, "", "", 0, 0, 270, "Main");
-    inputTree(&pohon, "", "", 0, 0, 150, "Group 1");
-    inputTree(&pohon, "", "", 0, 0, 100, "Pakaian");
-    inputTree(&pohon, "HOODIE AHHA", "HOODIE DENGAN BERBAGAI UKURAN DARI MINIMAL HINGGA MAKSIMAL", 455000, 50, 101, "Pakaian");
-    inputTree(&pohon, "KAOS IBU HAMIL", "KAOS DENGAN UKURAN S SAJA", 95000, 3, 102, "Pakaian");
-    inputTree(&pohon, "JAKET ZIPPER", "JAKET BISA DI PAKAI FORMAL MAUPUN CASUAL (SANTAI ABIS)", 300500, 36, 103, "Pakaian");
-    inputTree(&pohon, "", "", 0, 0, 200, "Elektronik");
-    inputTree(&pohon, "ASUS TUF GAMING", "LAPTOP BISA DIPAKAI UNTUK NGODING C++", 15222000, 11, 201, "Elektronik");
-    inputTree(&pohon, "GALAXY Z FOLD4", "HP SAMSUNG LIPAT CANGGIH UNTUK ANDA", 7999000, 5, 202, "Elektronik");
-    inputTree(&pohon, "LG SMART TV 32", "TV CERDAS LEBIH CERDAS DARI ANDA", 1250000, 7, 203, "Elektronik");
-    inputTree(&pohon, "", "", 0, 0, 350, "Group 2");
-    inputTree(&pohon, "", "", 0, 0, 300, "Makanan");
-    inputTree(&pohon, "BASRENG PEDAS", "BASRENG SEUHAH DENGAN DAUN JERUK", 25000, 15, 301, "Makanan");
-    inputTree(&pohon, "EAT SAMBEL", "SAMBEL TIKTOKERS YANG ENAK", 35500, 100, 302, "Makanan");
-    inputTree(&pohon, "ROTI AOKA", "ROTI BUKAN SEKEDAR ROTI, TAPI ROTI ENAK", 2500, 29, 303, "Makanan");
+    inputTree(&pohon, "", "", 0, 0, 270, "Main", "");
+    inputTree(&pohon, "", "", 0, 0, 150, "Group 1", "");
+    inputTree(&pohon, "", "", 0, 0, 100, "Pakaian", "");
+    inputTree(&pohon, "HOODIE AHHA", "HOODIE DENGAN BERBAGAI UKURAN DARI MINIMAL HINGGA MAKSIMAL", 455000, 50, 101, "Pakaian", "733199926");
+    inputTree(&pohon, "KAOS IBU HAMIL", "KAOS DENGAN UKURAN S SAJA", 95000, 3, 102, "Pakaian", "874924108");
+    inputTree(&pohon, "JAKET ZIPPER", "JAKET BISA DI PAKAI FORMAL MAUPUN CASUAL (SANTAI ABIS)", 300500, 36, 103, "Pakaian", "585987722");
+    inputTree(&pohon, "", "", 0, 0, 200, "Elektronik", "");
+    inputTree(&pohon, "ASUS TUF GAMING", "LAPTOP BISA DIPAKAI UNTUK NGODING C++", 15222000, 11, 201, "Elektronik", "761725523");
+    inputTree(&pohon, "GALAXY Z FOLD4", "HP SAMSUNG LIPAT CANGGIH UNTUK ANDA", 7999000, 5, 202, "Elektronik", "526377389");
+    inputTree(&pohon, "LG SMART TV 32", "TV CERDAS LEBIH CERDAS DARI ANDA", 1250000, 7, 203, "Elektronik", "640773823");
+    inputTree(&pohon, "", "", 0, 0, 350, "Group 2", "");
+    inputTree(&pohon, "", "", 0, 0, 300, "Makanan", "");
+    inputTree(&pohon, "BASRENG PEDAS", "BASRENG SEUHAH DENGAN DAUN JERUK", 25000, 15, 301, "Makanan", "388138333");
+    inputTree(&pohon, "EAT SAMBEL", "SAMBEL TIKTOKERS YANG ENAK", 35500, 100, 302, "Makanan", "457290336");
+    inputTree(&pohon, "ROTI AOKA", "ROTI BUKAN SEKEDAR ROTI, TAPI ROTI ENAK", 2500, 29, 303, "Makanan", "982288709");
 };
 
 void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
@@ -114,18 +141,6 @@ void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
             cout << "+" << endl;
         }
     }
-    /* if (counter == 5)
-    {
-        int colWidths[] = {3, 15, 70, 15, 5, 9};
-        cout << setfill('-');
-        for (int i = 0; i < 6; i++)
-        {
-            cout << "+" << setw(colWidths[i]) << "-";
-        }
-        cout << "+" << endl;
-
-        counter++;
-    } */
     if (root != NULL)
     {
         if (root->data.id >= parentId && root->data.id < (parentId + 5))
@@ -165,70 +180,6 @@ void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
         }
     }
 };
-
-/* void printProduk(tree* root, int& counter);
-
-void printDaftar (tree *root, int parentId)
-{
-    int counter = 1;
-    if (root != NULL)
-    {
-        int colWidths[] = {3, 15, 70, 15, 5, 9}; 
-
-        cout << setfill('-');
-        for (int i = 0; i < 6; i++)
-        {
-            cout << "+" << setw(colWidths[i]) << "-";
-        }
-        cout << "+" << endl;
-
-        cout << setfill(' ');
-        cout << "| " << setw(colWidths[0]) << "No"
-            << " | "
-            << setw(colWidths[1]) << "Nama"
-            << " | "
-            << setw(colWidths[2]) << "Deskripsi"
-            << " | "
-            << setw(colWidths[3]) << "Harga"
-            << " | "
-            << setw(colWidths[4]) << "Stok"
-            << " |" << endl;
-
-        cout << setfill('-');
-        for (int i = 0; i < 6; i++)
-        {
-            cout << "+" << setw(colWidths[i]) << "-";
-        }
-        cout << "+" << endl;
-
-        printProduk(root, counter);
-
-        cout << setfill('-');
-        for (int i = 0; i < 6; i++)
-        {
-            cout << "+" << setw(colWidths[i]) << "-";
-        }
-        cout << "+" << endl;
-    }
-};
-
-void printProduk(tree* root, int& counter)
-{
-    if (root != NULL)
-    {
-        int colWidths[] = {3, 15, 70, 15, 5, 9};
-        printProduk(root->left, counter);
-
-        cout << setfill(' ');
-        cout << "| " << setw(colWidths[0]) << counter << " | "
-             << setw(colWidths[1]) << root->data.nama << " | "
-             << setw(colWidths[2]) << root->data.deskripsi << " | "
-             << setw(colWidths[3]) << root->data.harga << " | "
-             << setw(colWidths[4]) << root->data.stok << " |" << endl;
-        counter++;
-        printProduk(root->right, counter);
-    }
-} */
 
 void printKategori(tree *root)
 {
@@ -300,43 +251,98 @@ void minusStok(tree *root, int pil, int minStok)
     }
 }
 
+const int ukuranQueue = 99;
+struct Queue
+{
+    int top;
+    string noTransaksi[ukuranQueue];
+    int waktuTransaksi[ukuranQueue];
+
+};
+Queue queue;
+
+void createQueue()
+{
+    queue.top = 0;
+}
+
+bool isEmpty()
+{
+    if (queue.top == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool isFull()
+{
+    if (queue.top >= ukuranQueue)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void inQueue(string data)
+{
+        queue.noTransaksi[queue.top] = data;
+        time_t waktuTemp = time(nullptr);
+        queue.waktuTransaksi[queue.top] = waktuTemp;
+        queue.top++;  
+}
+
+string deQueue()
+{
+    string temp = queue.noTransaksi[0];
+    for (int i = 1; i < queue.top; i++)
+    {
+        queue.noTransaksi[i - 1] = queue.noTransaksi[i];
+    }
+    queue.top--;
+    return temp;
+}
+
+void checkPembayaran()
+{
+    if (!isEmpty())
+    {
+        time_t waktuTemp = time(nullptr);
+        int saatIni = waktuTemp;
+        if (saatIni - queue.waktuTransaksi[0] >= 30)
+        {
+            node *current = keranjang.head;
+            string checking = deQueue();
+            while (current != NULL && current->Transaksi.noTransaksi != checking)
+            {
+                current = current->next;
+            }
+            current->Transaksi.statusPembayaran = "Transaksi Selesai";
+        }
+    }
+}
+
 produk listProduk[] = {
-    {"HOODIE AHHA", "HOODIE DENGAN BERBAGAI UKURAN DARI MINIMAL HINGGA MAKSIMAL", 455000, 50, 101},
-    {"KAOS IBU HAMIL", "KAOS DENGAN UKURAN S SAJA", 95000, 3, 102},
-    {"JAKET ZIPPER", "JAKET BISA DI PAKAI FORMAL MAUPUN CASUAL (SANTAI ABIS)", 300500, 36, 103},
-    {"ASUS TUF GAMING", "LAPTOP BISA DIPAKAI UNTUK NGODING C++", 15222000, 11, 201},
-    {"GALAXY Z FOLD4", "HP SAMSUNG LIPAT CANGGIH UNTUK ANDA", 7999000, 5, 202},
-    {"LG SMART TV 32", "TV CERDAS LEBIH CERDAS DARI ANDA", 1250000, 7, 203},
-    {"BASRENG PEDAS", "BASRENG SEUHAH DENGAN DAUN JERUK", 25000, 15, 401},
-    {"EAT SAMBEL", "SAMBEL TIKTOKERS YANG ENAK", 35500, 100, 402},
-    {"ROTI AOKA", "ROTI BUKAN SEKEDAR ROTI, TAPI ROTI ENAK", 2500, 29, 403}};
+    {"HOODIE AHHA", "HOODIE DENGAN BERBAGAI UKURAN DARI MINIMAL HINGGA MAKSIMAL", 455000, 50, 101, "Pakaian", "733199926"},
+    {"KAOS IBU HAMIL", "KAOS DENGAN UKURAN S SAJA", 95000, 3, 102, "Pakaian", "874924108"},
+    {"JAKET ZIPPER", "JAKET BISA DI PAKAI FORMAL MAUPUN CASUAL (SANTAI ABIS)", 300500, 36, 103, "Pakaian", "585987722"},
+    {"ASUS TUF GAMING", "LAPTOP BISA DIPAKAI UNTUK NGODING C++", 15222000, 11, 201, "Elektronik", "761725523"},
+    {"GALAXY Z FOLD4", "HP SAMSUNG LIPAT CANGGIH UNTUK ANDA", 7999000, 5, 202, "Elektronik", "526377389"},
+    {"LG SMART TV 32", "TV CERDAS LEBIH CERDAS DARI ANDA", 1250000, 7, 203, "Elektronik", "640773823"},
+    {"BASRENG PEDAS", "BASRENG SEUHAH DENGAN DAUN JERUK", 25000, 15, 301, "Makanan", "388138333"},
+    {"EAT SAMBEL", "SAMBEL TIKTOKERS YANG ENAK", 35500, 100, 302, "Makanan", "457290336"},
+    {"ROTI AOKA", "ROTI BUKAN SEKEDAR ROTI, TAPI ROTI ENAK", 2500, 29, 303, "Makanan", "982288709"}};
 
 // GLOBAL VARIABEL
 int length = sizeof(listProduk) / sizeof(listProduk[0]);
 
 int menuUtama();
-
-struct transaksi
-{
-    string noTransaksi;
-    string namaProduk;
-    int Qty;
-    int totalHarga;
-    string statusPembayaran;
-};
-
-struct node
-{
-    transaksi Transaksi;
-    node *next;
-};
-
-struct linkedlist
-{
-    node *head;
-    node *tail;
-};
-linkedlist keranjang;
 
 // MEMBUAT LIST KOSONG
 void createEmpty(linkedlist *list)
@@ -388,6 +394,7 @@ void insertLast(linkedlist *list, produk listProduk[], int x)
     new_node->Transaksi.namaProduk = listProduk[x-1].nama;
     new_node->Transaksi.Qty = tempQty;
     new_node->Transaksi.totalHarga = tempQty * listProduk[x-1].harga;
+    new_node->Transaksi.VAccount = listProduk[x-1].vAccount;
     new_node->next = NULL;
 
     if (isEmpty(keranjang))
@@ -651,7 +658,6 @@ int pembelian(){
                 << "Produk\t\t  : " << current->Transaksi.namaProduk << endl
                 << "Jumlah\t\t  : " << current->Transaksi.Qty << "\t" << endl
                 << "Total Harga\t  : " << current->Transaksi.totalHarga << endl
-                << "Status Pembayaran : " << current->Transaksi.statusPembayaran << endl
                 << endl;
                 break;
             }
@@ -663,12 +669,15 @@ int pembelian(){
                 cin >> choice;
                 if (choice == "y" || choice == "Y")
                 {
-                    cout << "Sudahkah pembayaran dilakukan?" << endl;
+                    cout << "Generate Virtual Account untuk Pembayaran?" << endl;
                     cout << "[y]Ya / [n]Tidak\t: ";
                     cin >> choice;
                     if (choice == "y" || choice == "Y")
                     {
-                        current2->Transaksi.statusPembayaran = "Sudah Selesai";
+                        current2->Transaksi.statusPembayaran = "Transaksi Pending";
+                        inQueue(current2->Transaksi.noTransaksi);
+                        cout << endl << "Nomor Virtual Account : " << listProduk[pilihB-1].vAccount << endl;
+                        cout << "Silahkan bayar denga metode pilihan anda !" << endl << endl;
                         cout << "\033[32m";
                         cout << "Produk berhasil ditambahkan ke keranjang" << endl;
                         cout << "\033[0m \n\n";
@@ -778,10 +787,10 @@ int Pembayaran(){
                     }
                     else if (current2->Transaksi.statusPembayaran == "Belum Selesai")
                     {
-                        cout << "\033[32m";
-                        current2->Transaksi.statusPembayaran = "Sudah Selesai";    
-                        cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " telah dibayar." << endl << endl;
-                        cout << "\033[0m";
+                        current2->Transaksi.statusPembayaran = "Transaksi Pending";
+                        inQueue(current2->Transaksi.noTransaksi);
+                        cout << endl << "Nomor Virtual Account : " << current2->Transaksi.VAccount << endl;
+                        cout << "Silahkan bayar denga metode pilihan anda !" << endl << endl;
                     }
                 }
                 system("pause");
@@ -802,6 +811,7 @@ int menuUtama(){
     bool exitloop = false;
     while (!exitloop)
     {
+        checkPembayaran();
         int pilihM;
         system("cls");
         cout << "\033[38;5;202m";
