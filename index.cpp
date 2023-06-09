@@ -77,29 +77,96 @@ void listingProduk()
     inputTree(&pohon, "ROTI AOKA", "ROTI BUKAN SEKEDAR ROTI, TAPI ROTI ENAK", 2500, 29, 303, "Makanan");
 };
 
-// void printDaftar (tree *root, int parentId)
-// {
-//     if (root != NULL)
-//     {
-//         if (root->data.id >= parentId && root->data.id < (parentId + 5))
-//         {
-//             if (root->left != NULL)
-//                 cout << root->left->data.id << endl;
-//             else if (root->right != NULL)
-//                 cout << root->right->data.id << endl;
+void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
+{
+    rekursiCount++;
+    if (rekursiCount == 1)
+    {
+        int counter = 1;
+        if (root != NULL)
+        {
+            int colWidths[] = {3, 15, 70, 15, 5, 9}; 
 
-//             printDaftar(root->left, parentId);
-//             printDaftar(root->right, parentId);
-//         }
-//         else
-//         {
-//             printDaftar(root->left, parentId);
-//             printDaftar(root->right, parentId);
-//         }
-//     }
-// };
+            cout << setfill('-');
+            for (int i = 0; i < 6; i++)
+            {
+                cout << "+" << setw(colWidths[i]) << "-";
+            }
+            cout << "+" << endl;
 
-void printProduk(tree* root, int& counter);
+            cout << setfill(' ');
+            cout << "| " << setw(colWidths[0]) << "No"
+                << " | "
+                << setw(colWidths[1]) << "Nama"
+                << " | "
+                << setw(colWidths[2]) << "Deskripsi"
+                << " | "
+                << setw(colWidths[3]) << "Harga"
+                << " | "
+                << setw(colWidths[4]) << "Stok"
+                << " |" << endl;
+
+            cout << setfill('-');
+            for (int i = 0; i < 6; i++)
+            {
+                cout << "+" << setw(colWidths[i]) << "-";
+            }
+            cout << "+" << endl;
+        }
+    }
+    /* if (counter == 5)
+    {
+        int colWidths[] = {3, 15, 70, 15, 5, 9};
+        cout << setfill('-');
+        for (int i = 0; i < 6; i++)
+        {
+            cout << "+" << setw(colWidths[i]) << "-";
+        }
+        cout << "+" << endl;
+
+        counter++;
+    } */
+    if (root != NULL)
+    {
+        if (root->data.id >= parentId && root->data.id < (parentId + 5))
+        {
+            if (root->left != NULL)
+            {
+                int colWidths[] = {3, 15, 70, 15, 5, 9};
+                cout << setfill(' ');
+                cout << "| " << setw(colWidths[0]) << counter << " | "
+                << setw(colWidths[1]) << root->left->data.nama << " | "
+                << setw(colWidths[2]) << root->left->data.deskripsi << " | "
+                << setw(colWidths[3]) << root->left->data.harga << " | "
+                << setw(colWidths[4]) << root->left->data.stok << " |" << endl;
+
+                counter++;
+            }
+            else if (root->right != NULL)
+            {
+                int colWidths[] = {3, 15, 70, 15, 5, 9};
+                cout << setfill(' ');
+                cout << "| " << setw(colWidths[0]) << counter << " | "
+                << setw(colWidths[1]) << root->right->data.nama << " | "
+                << setw(colWidths[2]) << root->right->data.deskripsi << " | "
+                << setw(colWidths[3]) << root->right->data.harga << " | "
+                << setw(colWidths[4]) << root->right->data.stok << " |" << endl;
+
+                counter++;
+            }
+
+            printDaftar(root->left, parentId, rekursiCount, counter);
+            printDaftar(root->right, parentId, rekursiCount, counter);
+        }
+        else
+        {
+            printDaftar(root->left, parentId, rekursiCount, counter);
+            printDaftar(root->right, parentId, rekursiCount, counter);
+        }
+    }
+};
+
+/* void printProduk(tree* root, int& counter);
 
 void printDaftar (tree *root, int parentId)
 {
@@ -161,7 +228,7 @@ void printProduk(tree* root, int& counter)
         counter++;
         printProduk(root->right, counter);
     }
-}
+} */
 
 void printKategori(tree *root)
 {
@@ -181,7 +248,14 @@ void printKategori(tree *root)
     {
         pil = pil * 100;
         system("cls");
-        printDaftar(root, pil);
+        printDaftar(root, pil, 0, 1);
+        int colWidths[] = {3, 15, 70, 15, 5, 9};
+        cout << setfill('-');
+        for (int i = 0; i < 6; i++)
+        {
+            cout << "+" << setw(colWidths[i]) << "-";
+        }
+        cout << "+" << endl;
     }
     else if (pil == 0)
     {
