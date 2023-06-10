@@ -262,6 +262,7 @@ struct Queue
 {
     int top;
     string noTransaksi[ukuranQueue];
+    string namaBarang[ukuranQueue];
     int waktuTransaksi[ukuranQueue];
 
 };
@@ -296,9 +297,10 @@ bool isFull()
     }
 }
 
-void inQueue(string data)
+void inQueue(string data, string barang)
 {
         queue.noTransaksi[queue.top] = data;
+        queue.namaBarang[queue.top] = barang;
         time_t waktuTemp = time(nullptr);
         queue.waktuTransaksi[queue.top] = waktuTemp;
         queue.top++;  
@@ -329,7 +331,18 @@ void checkPembayaran()
             {
                 current = current->next;
             }
+            int i = 0;
+            while (queue.namaBarang[0] != listProduk[i].nama)
+            {
+                i++;
+            }
+            listProduk[i].stok = listProduk[i].stok - current->Transaksi.Qty;
+            i++;
+            minusStok(pohon, i, current->Transaksi.Qty);
             current->Transaksi.statusPembayaran = "Transaksi Selesai";
+            cout << "\033[32m";
+            cout << "Transaksi dengan nomor " << current->Transaksi.noTransaksi << " Sudah Selesai" << endl << endl;
+            cout << "\033[0m";
         }
     }
 }
@@ -684,15 +697,13 @@ int pembelian(){
                     if (choice == "y" || choice == "Y")
                     {
                         current2->Transaksi.statusPembayaran = "Transaksi Pending";
-                        inQueue(current2->Transaksi.noTransaksi);
+                        inQueue(current2->Transaksi.noTransaksi, current2->namaProduk);
                         cout << endl << "Nomor Virtual Account : " << listProduk[pilihB-1].vAccount << endl;
                         cout << "Silahkan bayar dengan metode pembayaran anda !" << endl << endl;
                         cout << "\033[32m";
                         cout << "Produk berhasil ditambahkan ke keranjang" << endl;
                         cout << "\033[0m \n\n";
                         system("pause");
-                        listProduk[pilihB-1].stok = (listProduk[pilihB-1].stok) - (current->Transaksi.Qty);
-                        minusStok(pohon, pilihB, current->Transaksi.Qty);
                         return menuUtama();
                     }
                     else if (choice == "n" || choice == "N")
@@ -796,24 +807,18 @@ int Pembayaran(){
                         cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " Sudah Selesai, Tidak Perlu Dibayar" << endl << endl;
                         cout << "\033[0m";
                     }
+                    else if (current2->Transaksi.statusPembayaran == "Transaksi Pending")
+                    {
+                        cout << "\033[33m";
+                        cout << "Transaksi sedang dalam proses pembayaran melalui Virtual Account oleh pengguna, harap menunggu!" << endl << endl;
+                        cout << "\033[0m";
+                    }
                     else if (current2->Transaksi.statusPembayaran == "Belum Selesai")
                     {
                         current2->Transaksi.statusPembayaran = "Transaksi Pending";
                         inQueue(current2->Transaksi.noTransaksi);
                         cout << endl << "Nomor Virtual Account : " << current2->Transaksi.VAccount << endl;
                         cout << "Silahkan bayar dengan metode pilihan anda !" << endl << endl;
-                    }
-                    else if (current2->Transaksi.statusPembayaran == "Transaksi Pending")
-                    {
-                        cout << "\033[32m";
-                        cout << "Transaksi sedang dalam proses pembayaran melalui Virtual Account oleh pengguna, harap menunggu!" << endl << endl;
-                        cout << "\033[0m";
-                    }
-                    else if (current2->Transaksi.statusPembayaran == "Transaksi Selesai")
-                    {
-                        cout << "\033[32m";
-                        cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " Sudah Selesai, Tidak Perlu Dibayar" << endl << endl;
-                        cout << "\033[0m";
                     }
                 }
                 system("pause");
