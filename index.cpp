@@ -340,7 +340,7 @@ void checkPembayaran()
     {
         time_t waktuTemp = time(nullptr);
         int saatIni = waktuTemp;
-        if (saatIni - queue.waktuTransaksi[0] >= 30)
+        if (saatIni - queue.waktuTransaksi[0] >= 15)
         {
             node *current = keranjang.head;
             string checking = deQueue();
