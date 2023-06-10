@@ -154,7 +154,7 @@ void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
                 << setw(colWidths[1]) << root->left->data.nama << " | "
                 << setw(colWidths[2]) << root->left->data.deskripsi << " | "
                 << setw(colWidths[3]) << root->left->data.harga << " | "
-                << setw(colWidths[4]) << root->left->data.stok+1 << " |" << endl;
+                << setw(colWidths[4]) << root->left->data.stok << " |" << endl;
 
                 counter++;
             }
@@ -166,7 +166,7 @@ void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
                 << setw(colWidths[1]) << root->right->data.nama << " | "
                 << setw(colWidths[2]) << root->right->data.deskripsi << " | "
                 << setw(colWidths[3]) << root->right->data.harga << " | "
-                << setw(colWidths[4]) << root->right->data.stok+1 << " |" << endl;
+                << setw(colWidths[4]) << root->right->data.stok << " |" << endl;
 
                 counter++;
             }
