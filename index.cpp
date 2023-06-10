@@ -330,6 +330,9 @@ void checkPembayaran()
                 current = current->next;
             }
             current->Transaksi.statusPembayaran = "Transaksi Selesai";
+            cout << "\033[32m";
+            cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " Sudah Selesai" << endl << endl;
+            cout << "\033[0m";
         }
     }
 }
@@ -795,6 +798,12 @@ int Pembayaran(){
                         cout << "\033[32m";
                         cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " Sudah Selesai, Tidak Perlu Dibayar" << endl << endl;
                         cout << "\033[0m";
+                    }
+                    else if (current2->Transaksi.statusPembayaran = "Transaksi Pending")
+                    {
+                        cout << "\033[33m";
+                        cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " Sedang dalam proses Transaksi" << endl << endl;
+                        cout << "\033[0m";    
                     }
                     else if (current2->Transaksi.statusPembayaran == "Belum Selesai")
                     {
