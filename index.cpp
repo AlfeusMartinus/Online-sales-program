@@ -50,6 +50,20 @@ struct linkedlist
 };
 linkedlist keranjang;
 
+produk listProduk[] = {
+    {"HOODIE AHHA", "HOODIE DENGAN BERBAGAI UKURAN DARI MINIMAL HINGGA MAKSIMAL", 455000, 50, 101, "Pakaian", "733199926"},
+    {"KAOS IBU HAMIL", "KAOS DENGAN UKURAN S SAJA", 95000, 3, 102, "Pakaian", "874924108"},
+    {"JAKET ZIPPER", "JAKET BISA DI PAKAI FORMAL MAUPUN CASUAL (SANTAI ABIS)", 300500, 36, 103, "Pakaian", "585987722"},
+    {"ASUS TUF GAMING", "LAPTOP BISA DIPAKAI UNTUK NGODING C++", 15222000, 11, 201, "Elektronik", "761725523"},
+    {"GALAXY Z FOLD4", "HP SAMSUNG LIPAT CANGGIH UNTUK ANDA", 7999000, 5, 202, "Elektronik", "526377389"},
+    {"LG SMART TV 32", "TV CERDAS LEBIH CERDAS DARI ANDA", 1250000, 7, 203, "Elektronik", "640773823"},
+    {"BASRENG PEDAS", "BASRENG SEUHAH DENGAN DAUN JERUK", 25000, 15, 301, "Makanan", "388138333"},
+    {"EAT SAMBEL", "SAMBEL TIKTOKERS YANG ENAK", 35500, 100, 302, "Makanan", "457290336"},
+    {"ROTI AOKA", "ROTI BUKAN SEKEDAR ROTI, TAPI ROTI ENAK", 2500, 29, 303, "Makanan", "982288709"}};
+
+// GLOBAL VARIABEL
+int length = sizeof(listProduk) / sizeof(listProduk[0]);
+
 int menuUtama();
 
 void deklarasi()
@@ -154,7 +168,7 @@ void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
                 << setw(colWidths[1]) << root->left->data.nama << " | "
                 << setw(colWidths[2]) << root->left->data.deskripsi << " | "
                 << setw(colWidths[3]) << root->left->data.harga << " | "
-                << setw(colWidths[4]) << root->left->data.stok+1 << " |" << endl;
+                << setw(colWidths[4]) << root->left->data.stok << " |" << endl;
 
                 counter++;
             }
@@ -166,7 +180,7 @@ void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
                 << setw(colWidths[1]) << root->right->data.nama << " | "
                 << setw(colWidths[2]) << root->right->data.deskripsi << " | "
                 << setw(colWidths[3]) << root->right->data.harga << " | "
-                << setw(colWidths[4]) << root->right->data.stok+1 << " |" << endl;
+                << setw(colWidths[4]) << root->right->data.stok << " |" << endl;
 
                 counter++;
             }
@@ -225,35 +239,40 @@ void printKategori(tree *root)
     
 };
 
-void minusStok(tree *root, int pil, int minStok)
+void minusStok(tree *root, int pil, int minStok, bool done)
 {
     if (pil >= 1 && pil < 4)
     {
         pil = pil + 100;
-        minusStok(root, pil, minStok);
+        minusStok(root, pil, minStok, done);
+        return;
     }
     else if (pil >= 4 && pil < 7)
     {
         pil = (pil - 3) + 200;
-        minusStok(root, pil, minStok);
+        minusStok(root, pil, minStok, done);
+        return;
     }
     else if (pil >= 7 && pil < 10)
     {
         pil = (pil - 6) + 300;
-        minusStok(root, pil, minStok);
+        minusStok(root, pil, minStok, done);
+        return;
     }
-    
-     if (root != NULL)
+    if (root != NULL)
     {
         if (root->data.id == pil)
         {
+            cout << minStok << endl;
+            cout << root->data.stok << endl;
             root->data.stok = root->data.stok - minStok;
+            done = true;
         }
-        else
-        {
-            minusStok(root->left, pil, minStok);
-            minusStok(root->right, pil, minStok);
-        }
+
+        if (root->left != NULL)
+            minusStok(root->left, pil, minStok, done);
+        if (root->right != NULL)
+            minusStok(root->right, pil, minStok, done);
     }
 }
 
@@ -338,7 +357,7 @@ void checkPembayaran()
             }
             listProduk[i].stok = listProduk[i].stok - current->Transaksi.Qty;
             i++;
-            minusStok(pohon, i, current->Transaksi.Qty);
+            minusStok(pohon, i, current->Transaksi.Qty, false);
             current->Transaksi.statusPembayaran = "Transaksi Selesai";
             cout << "\033[32m";
             cout << "Transaksi dengan nomor " << current->Transaksi.noTransaksi << " Sudah Selesai" << endl << endl;
@@ -346,22 +365,6 @@ void checkPembayaran()
         }
     }
 }
-
-produk listProduk[] = {
-    {"HOODIE AHHA", "HOODIE DENGAN BERBAGAI UKURAN DARI MINIMAL HINGGA MAKSIMAL", 455000, 50, 101, "Pakaian", "733199926"},
-    {"KAOS IBU HAMIL", "KAOS DENGAN UKURAN S SAJA", 95000, 3, 102, "Pakaian", "874924108"},
-    {"JAKET ZIPPER", "JAKET BISA DI PAKAI FORMAL MAUPUN CASUAL (SANTAI ABIS)", 300500, 36, 103, "Pakaian", "585987722"},
-    {"ASUS TUF GAMING", "LAPTOP BISA DIPAKAI UNTUK NGODING C++", 15222000, 11, 201, "Elektronik", "761725523"},
-    {"GALAXY Z FOLD4", "HP SAMSUNG LIPAT CANGGIH UNTUK ANDA", 7999000, 5, 202, "Elektronik", "526377389"},
-    {"LG SMART TV 32", "TV CERDAS LEBIH CERDAS DARI ANDA", 1250000, 7, 203, "Elektronik", "640773823"},
-    {"BASRENG PEDAS", "BASRENG SEUHAH DENGAN DAUN JERUK", 25000, 15, 301, "Makanan", "388138333"},
-    {"EAT SAMBEL", "SAMBEL TIKTOKERS YANG ENAK", 35500, 100, 302, "Makanan", "457290336"},
-    {"ROTI AOKA", "ROTI BUKAN SEKEDAR ROTI, TAPI ROTI ENAK", 2500, 29, 303, "Makanan", "982288709"}};
-
-// GLOBAL VARIABEL
-int length = sizeof(listProduk) / sizeof(listProduk[0]);
-
-
 
 // MEMBUAT LIST KOSONG
 void createEmpty(linkedlist *list)
@@ -697,7 +700,7 @@ int pembelian(){
                     if (choice == "y" || choice == "Y")
                     {
                         current2->Transaksi.statusPembayaran = "Transaksi Pending";
-                        inQueue(current2->Transaksi.noTransaksi, current2->namaProduk);
+                        inQueue(current2->Transaksi.noTransaksi, current2->Transaksi.namaProduk);
                         cout << endl << "Nomor Virtual Account : " << listProduk[pilihB-1].vAccount << endl;
                         cout << "Silahkan bayar dengan metode pembayaran anda !" << endl << endl;
                         cout << "\033[32m";
@@ -816,7 +819,7 @@ int Pembayaran(){
                     else if (current2->Transaksi.statusPembayaran == "Belum Selesai")
                     {
                         current2->Transaksi.statusPembayaran = "Transaksi Pending";
-                        inQueue(current2->Transaksi.noTransaksi);
+                        inQueue(current2->Transaksi.noTransaksi, current2->Transaksi.namaProduk);
                         cout << endl << "Nomor Virtual Account : " << current2->Transaksi.VAccount << endl;
                         cout << "Silahkan bayar dengan metode pilihan anda !" << endl << endl;
                     }
@@ -839,7 +842,6 @@ int menuUtama(){
     bool exitloop = false;
     while (!exitloop)
     {
-        checkPembayaran();
         int pilihM;
         system("cls");
         cout << "\033[38;5;202m";
@@ -847,6 +849,7 @@ int menuUtama(){
         cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
         cout << "                                     ===============================================" << endl << endl << endl;
         cout << "\033[0m";
+        checkPembayaran();
         cout << "========= MENU UTAMA =========" << endl;
         cout << "[1] Melihat Daftar Produk     " << endl
              << "[2] Pembelian                 " << endl
