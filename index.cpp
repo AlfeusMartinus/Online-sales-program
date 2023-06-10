@@ -362,7 +362,10 @@ void checkPembayaran()
             cout << "\033[0m";
         }
     }
-    cout << endl;
+    else
+    {
+        cout << endl;
+    }
 }
 
 // MEMBUAT LIST KOSONG
