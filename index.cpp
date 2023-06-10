@@ -329,6 +329,8 @@ string deQueue()
     for (int i = 1; i < queue.top; i++)
     {
         queue.noTransaksi[i - 1] = queue.noTransaksi[i];
+        queue.namaBarang[i - 1] = queue.namaBarang[i];
+        queue.waktuTransaksi[i - 1] = queue.waktuTransaksi[i];
     }
     queue.top--;
     return temp;
