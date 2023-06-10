@@ -263,8 +263,6 @@ void minusStok(tree *root, int pil, int minStok, bool done)
     {
         if (root->data.id == pil)
         {
-            cout << minStok << endl;
-            cout << root->data.stok << endl;
             root->data.stok = root->data.stok - minStok;
             done = true;
         }
@@ -363,6 +361,10 @@ void checkPembayaran()
             cout << "Transaksi dengan nomor " << current->Transaksi.noTransaksi << " Sudah Selesai" << endl << endl;
             cout << "\033[0m";
         }
+    }
+    else
+    {
+        cout << endl;
     }
 }
 
@@ -849,6 +851,7 @@ int menuUtama(){
         cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
         cout << "                                     ===============================================" << endl << endl << endl;
         cout << "\033[0m";
+        cout << "Notifikasi:" << endl;
         checkPembayaran();
         cout << "========= MENU UTAMA =========" << endl;
         cout << "[1] Melihat Daftar Produk     " << endl
