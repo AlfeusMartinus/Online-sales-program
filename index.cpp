@@ -50,6 +50,8 @@ struct linkedlist
 };
 linkedlist keranjang;
 
+int menuUtama();
+
 void deklarasi()
 {
     pohon = NULL;
@@ -109,7 +111,6 @@ void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
     rekursiCount++;
     if (rekursiCount == 1)
     {
-        int counter = 1;
         if (root != NULL)
         {
             int colWidths[] = {3, 15, 70, 15, 5, 9}; 
@@ -153,7 +154,7 @@ void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
                 << setw(colWidths[1]) << root->left->data.nama << " | "
                 << setw(colWidths[2]) << root->left->data.deskripsi << " | "
                 << setw(colWidths[3]) << root->left->data.harga << " | "
-                << setw(colWidths[4]) << root->left->data.stok << " |" << endl;
+                << setw(colWidths[4]) << root->left->data.stok+1 << " |" << endl;
 
                 counter++;
             }
@@ -165,7 +166,7 @@ void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
                 << setw(colWidths[1]) << root->right->data.nama << " | "
                 << setw(colWidths[2]) << root->right->data.deskripsi << " | "
                 << setw(colWidths[3]) << root->right->data.harga << " | "
-                << setw(colWidths[4]) << root->right->data.stok << " |" << endl;
+                << setw(colWidths[4]) << root->right->data.stok+1 << " |" << endl;
 
                 counter++;
             }
@@ -185,20 +186,22 @@ void printKategori(tree *root)
 {
     int pil;
     system("cls");
-    cout << "===============================" <<
-    endl << "         Menu Kategori" <<
-    endl << "===============================" <<
-    endl << "1. Pakaian" <<
-    endl << "2. Elektronik" <<
-    endl << "3. Makanan" <<
-    endl << "0. Menu Utama" <<
-    endl << "===============================" <<
-    endl << "Pilih menu kategori : ";
+    cout << "\t\t\t\t===============================" <<
+    endl << "\t\t\t\t         Menu Kategori" <<
+    endl << "\t\t\t\t===============================" <<
+    endl << endl << "================" <<
+    endl << " [1] Pakaian" <<
+    endl << " [2] Elektronik" <<
+    endl << " [3] Makanan" <<
+    endl << " [0] Menu Utama" <<
+    endl << "================" <<
+    endl << endl << "Pilih Kategori : ";
     cin >> pil;
     if (pil > 0 && pil < 4)
     {
         pil = pil * 100;
         system("cls");
+        cout << endl;
         printDaftar(root, pil, 0, 1);
         int colWidths[] = {3, 15, 70, 15, 5, 9};
         cout << setfill('-');
@@ -207,10 +210,13 @@ void printKategori(tree *root)
             cout << "+" << setw(colWidths[i]) << "-";
         }
         cout << "+" << endl;
+        cout << endl;
+        system("pause");
+        printKategori(root);
     }
     else if (pil == 0)
     {
-        return;
+        menuUtama();
     }
     else
     {
@@ -342,7 +348,7 @@ produk listProduk[] = {
 // GLOBAL VARIABEL
 int length = sizeof(listProduk) / sizeof(listProduk[0]);
 
-int menuUtama();
+
 
 // MEMBUAT LIST KOSONG
 void createEmpty(linkedlist *list)
@@ -374,7 +380,7 @@ void insertLast(linkedlist *list, produk listProduk[], int x)
 {
     int tempQty;
     string tempNoTrans, choice;
-    cout << "2. Jumlah\t\t\t\t\t: ";
+    cout << "[2] Jumlah\t\t\t\t\t: ";
     cin >> tempQty;
     if ((listProduk[x-1].stok - tempQty) < 0)
     {
@@ -382,8 +388,8 @@ void insertLast(linkedlist *list, produk listProduk[], int x)
         system("pause");
         menuUtama();
     }
-    cout << "3. Nomor Transaksi \t\t\t\t: ";
-    cout << noTransaksiAcak() << endl;
+    cout << "[3] Nomor Transaksi \t\t\t\t: ";
+    cout << noTransaksiAcak() << endl << endl;
     system("pause");
     tempNoTrans = noTransaksiAcak();
 
@@ -453,9 +459,9 @@ void displayHistory(linkedlist list)
             << "Produk\t\t  : " << current->Transaksi.namaProduk << endl
             << "Jumlah\t\t  : " << current->Transaksi.Qty << "\t" << endl
             << "Total Harga\t  : " << current->Transaksi.totalHarga << endl
-            << "Status Pembayaran : " << current->Transaksi.statusPembayaran << endl
-            << endl;
+            << "Status Pembayaran : " << current->Transaksi.statusPembayaran << endl;
             current = current->next;
+            cout << "======================================" << endl << endl;
         }
         cout << endl;
     }
@@ -557,6 +563,8 @@ bool login() {
     return 0;
 }
 
+
+
 // MENAMPILKAN DAFTAR BARANG
 void displayDaftar(){
     system("cls");
@@ -565,7 +573,8 @@ void displayDaftar(){
     cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
     cout << "                                     ===============================================" << endl << endl << endl;
     cout << "\033[0m";
-    cout << "================== DAFTAR PRODUK ==================" << endl << endl;
+    // cout << "================== DAFTAR PRODUK ==================" << endl << endl;
+    cout << setfill('=') << setw(63) << " DAFTAR PRODUK " << setfill('=') << setw(62) << " " << endl << endl;
     // for (int i = 0; i < length; i++)
     // {
     //     produk *pProduk = &listProduk[i]; // pointer untuk mengakses struct produk
@@ -631,8 +640,7 @@ int pembelian(){
     {
         displayDaftar();
         cout << "\n\n";
-        cout << "=================================" << endl;
-        cout << "1. Masukkan Nomor Produk Yang Akan Dibeli\t: ";
+        cout << "[1] Masukkan Nomor Produk Yang Akan Dibeli\t: ";
         cin >> pilihB;
         
         if (pilihB > length || pilihB < 1)
@@ -652,6 +660,9 @@ int pembelian(){
             }
             current2 = current;
             system("CLS");
+            cout << "\t\t\t\t===========" << endl;
+            cout << "\t\t\t\t  INVOICE" << endl;
+            cout << "\t\t\t\t===========" << endl << endl;
             while (current != NULL){
                 cout  
                 << "Nomor Transaksi\t  : " << current->Transaksi.noTransaksi << endl
@@ -664,20 +675,18 @@ int pembelian(){
             cout << endl;
             while (1 == 1)
             {
-                cout << "Pesanan ini sudah sesuai?" << endl;
-                cout << "[y]Ya / [n]Tidak\t: ";
+                cout << "Pesanan Sudah Sesuai [Y] Ya / [N] Tidak\t\t\t\t: ";
                 cin >> choice;
                 if (choice == "y" || choice == "Y")
                 {
-                    cout << "Generate Virtual Account untuk Pembayaran?" << endl;
-                    cout << "[y]Ya / [n]Tidak\t: ";
+                    cout << "Generate Virtual Account Untuk Pembayaran [Y] Ya / [N] Tidak\t: ";
                     cin >> choice;
                     if (choice == "y" || choice == "Y")
                     {
                         current2->Transaksi.statusPembayaran = "Transaksi Pending";
                         inQueue(current2->Transaksi.noTransaksi);
                         cout << endl << "Nomor Virtual Account : " << listProduk[pilihB-1].vAccount << endl;
-                        cout << "Silahkan bayar denga metode pilihan anda !" << endl << endl;
+                        cout << "Silahkan bayar dengan metode pembayaran anda !" << endl << endl;
                         cout << "\033[32m";
                         cout << "Produk berhasil ditambahkan ke keranjang" << endl;
                         cout << "\033[0m \n\n";
@@ -744,6 +753,8 @@ int Pembayaran(){
                 break;
             case 2:
                 system("cls");
+                displayHistory(keranjang);
+                cout << endl << endl;
                 if (isEmpty(keranjang)) 
                 {
                     cout << "Tidak ada transaksi yang harus dibayar." << endl;
@@ -790,7 +801,19 @@ int Pembayaran(){
                         current2->Transaksi.statusPembayaran = "Transaksi Pending";
                         inQueue(current2->Transaksi.noTransaksi);
                         cout << endl << "Nomor Virtual Account : " << current2->Transaksi.VAccount << endl;
-                        cout << "Silahkan bayar denga metode pilihan anda !" << endl << endl;
+                        cout << "Silahkan bayar dengan metode pilihan anda !" << endl << endl;
+                    }
+                    else if (current2->Transaksi.statusPembayaran == "Transaksi Pending")
+                    {
+                        cout << "\033[32m";
+                        cout << "Transaksi sedang dalam proses pembayaran melalui Virtual Account oleh pengguna, harap menunggu!" << endl << endl;
+                        cout << "\033[0m";
+                    }
+                    else if (current2->Transaksi.statusPembayaran == "Transaksi Selesai")
+                    {
+                        cout << "\033[32m";
+                        cout << "Transaksi dengan nomor " << current2->Transaksi.noTransaksi << " Sudah Selesai, Tidak Perlu Dibayar" << endl << endl;
+                        cout << "\033[0m";
                     }
                 }
                 system("pause");
