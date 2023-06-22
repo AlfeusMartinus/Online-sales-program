@@ -560,8 +560,21 @@ void displayHistory(linkedlist list)
             cout << "Nomor Transaksi\t  : " << current->Transaksi.noTransaksi << endl
             << "Produk\t\t  : " << current->Transaksi.namaProduk << endl
             << "Jumlah\t\t  : " << current->Transaksi.Qty << "\t" << endl
-            << "Total Harga\t  : " << current->Transaksi.totalHarga << endl
-            << "Status Pembayaran : " << current->Transaksi.statusPembayaran << endl;
+            << "Total Harga\t  : " << current->Transaksi.totalHarga << endl;
+            if (current->Transaksi.statusPembayaran == "Sudah Selesai")
+            {
+                cout << "\033[32m";
+            }
+            else if (current->Transaksi.statusPembayaran == "Transaksi Pending")
+            {
+                cout << "\033[33m";
+            }
+            else if (current->Transaksi.statusPembayaran == "Belum Selesai")
+            {
+                cout << "\033[31m";
+            }
+            cout << "Status Pembayaran : " << current->Transaksi.statusPembayaran << endl;
+            cout << "\033[0m";
             current = current->next;
             cout << "======================================" << endl << endl;
         }
