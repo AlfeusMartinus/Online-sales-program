@@ -984,6 +984,7 @@ void pengembalian(){
     }
     string pengembalianStr;
     int input;
+    string temp;
     displayHistory(keranjang);
     cout << endl << endl;
     cout << "No. Transaksi yang Ingin dikembalikan \t\t: ";
@@ -999,10 +1000,23 @@ void pengembalian(){
         system("pause");
         pengembalian();
     }
+    here:
     if (current->Transaksi.statusPembayaran == "Sudah Selesai")
     {
         cout << "Jumlah barang yang akan dikembalikan \t\t: ";
-        cin >> input;
+        
+        cin >> temp;
+        try
+        {
+            input = stoi(temp);
+        }
+        catch(const std::exception& e)
+        {
+            cout << "Masukan inputan yang benar" << endl;
+            system("PAUSE");
+            goto here;
+        }
+        
         if (current->Transaksi.Qty - input < 0)
         {
             cout << "Jumlah barang yang dikembalikan melebihi jumlah barang Transaksi" << endl;
