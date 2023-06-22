@@ -154,7 +154,7 @@ void printDaftar (tree *root, int parentId, int rekursiCount, int counter)
             cout << "+" << endl;
 
             cout << setfill(' ');
-            cout << "| " << setw(colWidths[0]) << "No"
+            cout << "| " << setw(colWidths[0]) << left << "No"
                 << " | "
                 << setw(colWidths[1]) << "Nama"
                 << " | "
@@ -670,12 +670,14 @@ bool login() {
 // MENAMPILKAN DAFTAR BARANG
 void displayDaftar(){
     system("cls");
-    cout << "\033[38;5;202m";
+    // cout << "\033[38;5;202m";
+    cout << "\033[38;5;202m\033[1m\033[3m";
     cout << "                                     ===============================================" << endl;
     cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
     cout << "                                     ===============================================" << endl << endl << endl;
     cout << "\033[0m";
     // cout << "================== DAFTAR PRODUK ==================" << endl << endl;
+    // cout << setfill('=') << setw(63) << " DAFTAR PRODUK " << setfill('=') << setw(62) << " " << endl << endl;
     cout << setfill('=') << setw(63) << " DAFTAR PRODUK " << setfill('=') << setw(62) << " " << endl << endl;
     // for (int i = 0; i < length; i++)
     // {
@@ -698,9 +700,9 @@ void displayDaftar(){
     cout << endl;
 
     cout << setfill(' ');
-    cout << "| " << setw(colWidths[0]) << "No"
+    cout << "| " << setw(colWidths[0]) << left << "No"
          << " | "
-         << setw(colWidths[1]) << left << "Nama"
+         << setw(colWidths[1]) << "Nama"
          << " | "
          << setw(colWidths[2]) << "Deskripsi"
          << " | "
@@ -797,7 +799,7 @@ int pembelian(){
                     {
                         current2->Transaksi.statusPembayaran = "Transaksi Pending";
                         inQueue(current2->Transaksi.noTransaksi, current2->Transaksi.namaProduk);
-                        cout << endl << "Nomor Virtual Account : " << listProduk[pilihB-1].vAccount << endl;
+                        cout << endl << "Nomor Virtual Account \t\t\t\t\t\t: " << listProduk[pilihB-1].vAccount << endl;
                         cout << "Silahkan bayar dengan metode pembayaran anda !" << endl << endl;
                         cout << "\033[32m";
                         cout << "Produk berhasil ditambahkan ke keranjang" << endl;
@@ -845,7 +847,7 @@ int Pembayaran(){
     {
         system("CLS");
         string subMenu;
-        cout << "\033[38;5;202m";
+        cout << "\033[38;5;202m\033[1m\033[3m";
         cout << "                                     ===============================================" << endl;
         cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
         cout << "                                     ===============================================" << endl << endl << endl;
@@ -943,9 +945,11 @@ int Pembayaran(){
 void pengembalian(){
     string pengembalian;
     int input;
-    cout << "No. Transaksi yang Ingin dikembalikan: ";
+    displayHistory(keranjang);
+    cout << endl << endl;
+    cout << "No. Transaksi yang Ingin dikembalikan \t\t: ";
     cin >> pengembalian;
-    cout << "Jumlah barang yang akan dikembalikan: ";
+    cout << "Jumlah barang yang akan dikembalikan \t\t: ";
     cin >> input;
      node *current = keranjang.head;
             while (current != NULL && current->Transaksi.noTransaksi != pengembalian)
@@ -963,7 +967,9 @@ void pengembalian(){
             i++;
             plusStok(pohon, i, input, false);
             }
-            
+    cout << "\033[32m";
+    cout << "Barang Berhasil Dikembalikan, Silahkan Cek Ketersediaan Stok Kembali!";
+    cout << "\033[0m \n\n";
 }
 
 // MENAMPILKAN MENU UTAMA
@@ -974,7 +980,7 @@ int menuUtama(){
         int pilihM;
         string temp;
         system("cls");
-        cout << "\033[38;5;202m";
+        cout << "\033[38;5;202m\033[1m\033[3m";
         cout << "                                     ===============================================" << endl;
         cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
         cout << "                                     ===============================================" << endl << endl << endl;
@@ -1034,6 +1040,7 @@ int menuUtama(){
         case 5: 
             system("cls");
             pengembalian();
+            system("pause");
             break;
         case 6: 
             system("CLS");
@@ -1058,7 +1065,7 @@ int main(){
     while (1 == 1)
     {
         system("cls");
-        cout << "\033[38;5;202m";
+        cout << "\033[38;5;202m\033[1m\033[3m";
         cout << "                                     ===============================================" << endl;
         cout << "                                     |                  WELCOME                    |" << endl;
         cout << "                                     |            ONLINE SALES PROGRAM             |" << endl;
